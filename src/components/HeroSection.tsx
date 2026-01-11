@@ -1,5 +1,5 @@
-import { PROJECTS } from '@/shared/config'
-import { Cpu, Download, Github, Linkedin, Mail } from 'lucide-react'
+import { EMAIL, GITHUB, LINKEDIN, PROJECTS } from '@/shared/config'
+import { Cpu, Download, Github, Linkedin, Mail, Moon, Sun } from 'lucide-react'
 import React, { useRef } from 'react'
 
 interface HeroSectionProps {
@@ -8,10 +8,13 @@ interface HeroSectionProps {
     accentColor: string
     borderColor: string
     isDark: boolean
-    downloadResume: () => void
+    downloadResume: (theme?: 'dark' | 'light') => void
+    resumeMenuRef: any
+    showResumeMenu: boolean
+    setShowResumeMenu: (showResumeMenu: boolean) => void
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, isDark, downloadResume }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, isDark, downloadResume, resumeMenuRef, showResumeMenu, setShowResumeMenu }) => {
 
     const heroRef = useRef(null);
 
@@ -34,13 +37,40 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-4">
-                            <button
-                                onClick={downloadResume}
-                                className={`${accentBg} text-white px-8 py-3 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105`}
-                            >
-                                <Download size={20} />
-                                Download Resume
-                            </button>
+                            <div className="relative" ref={resumeMenuRef}>
+                                <button
+                                    onClick={() => setShowResumeMenu(!showResumeMenu)}
+                                    className={`${accentBg} text-white px-8 py-3 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer`}
+                                >
+                                    <Download size={20} />
+                                    Download Resume
+                                </button>
+
+                                {showResumeMenu && (
+                                    <div className={`absolute top-full mt-2 ${cardBg} border ${borderColor} rounded-lg shadow-2xl p-2 min-w-[200px] z-10 animate-fade-in`}>
+                                        <button
+                                            onClick={() => downloadResume('dark')}
+                                            className={`w-full text-left px-4 py-3 rounded-lg hover:${isDark ? 'bg-gray-700' : 'bg-gray-100'} transition-colors flex items-center gap-3 cursor-pointer`}
+                                        >
+                                            <Moon size={18} className="text-purple-400" />
+                                            <div>
+                                                <div className="font-medium">Dark Theme</div>
+                                                <div className="text-xs opacity-60">Perfect for dark mode</div>
+                                            </div>
+                                        </button>
+                                        <button
+                                            onClick={() => downloadResume('light')}
+                                            className={`w-full text-left px-4 py-3 rounded-lg hover:${isDark ? 'bg-gray-700' : 'bg-gray-100'} transition-colors flex items-center gap-3 cursor-pointer`}
+                                        >
+                                            <Sun size={18} className="text-yellow-400" />
+                                            <div>
+                                                <div className="font-medium">Light Theme</div>
+                                                <div className="text-xs opacity-60">Print-friendly version</div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                             <a
                                 href="#contact"
                                 className={`border-2 ${borderColor} hover:border-cyan-400 px-8 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 font-medium hover:scale-105`}
@@ -52,13 +82,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
 
                         {/* Social Links */}
                         <div className="flex gap-4 mt-8">
-                            <a href="https://github.com/yourusername" target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
+                            <a href={GITHUB} target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
                                 <Github size={22} />
                             </a>
-                            <a href="https://linkedin.com/in/yourusername" target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
+                            <a href={LINKEDIN} target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
                                 <Linkedin size={22} />
                             </a>
-                            <a href="mailto:your.email@example.com" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
+                            <a href={`mailto:${EMAIL}`} className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'} transition-all duration-300 hover:scale-110`}>
                                 <Mail size={22} />
                             </a>
                         </div>

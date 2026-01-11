@@ -9,7 +9,7 @@ const Footer: React.FC<FooterProps> = ({ borderColor }: FooterProps) => {
         <footer className={`border-t ${borderColor} py-8`}>
             <div className="container mx-auto px-4 text-center">
                 <p className="font-mono text-sm opacity-70">
-                    © 2025 | Built with Next.js & Tailwind CSS | Optimized for SEO
+                    © 2026 | Yash Daxini
                 </p>
             </div>
         </footer>

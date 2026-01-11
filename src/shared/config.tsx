@@ -72,3 +72,9 @@ export const SKILLS = {
         items: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL']
     }
 };
+
+export const EMAIL = "yashdaxini2003@gmail.com";
+export const GITHUB = "https://github.com/Yash-Daxini";
+export const LINKEDIN = "linkedin.com/in/yash-daxini";
+export const GITHUB_USERNAME = "Yash-Daxini"
+export const LINKEDIN_USERNAME = "in/yash-daxini";

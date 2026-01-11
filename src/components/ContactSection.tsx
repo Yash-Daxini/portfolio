@@ -1,3 +1,4 @@
+import { EMAIL, GITHUB, GITHUB_USERNAME, LINKEDIN, LINKEDIN_USERNAME } from '@/shared/config'
 import { MessageSquare, Mail, Github, Linkedin } from 'lucide-react'
 import React, { useState } from 'react'
 
@@ -93,30 +94,30 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
                                 </div>
                                 <div>
                                     <div className="text-xs opacity-60">Email</div>
-                                    <div className="font-medium">your.email@example.com</div>
+                                    <div className="font-medium">{EMAIL}</div>
                                 </div>
                             </a>
-                            <a href="https://github.com/yourusername" target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                            <a href={GITHUB} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
                                 <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
                                     <Github size={20} className="group-hover:text-white" />
                                 </div>
                                 <div>
                                     <div className="text-xs opacity-60">GitHub</div>
-                                    <div className="font-medium">@yourusername</div>
+                                    <div className="font-medium">{GITHUB_USERNAME}</div>
                                 </div>
                             </a>
-                            <a href="https://linkedin.com/in/yourusername" target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                            <a href={LINKEDIN} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
                                 <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
                                     <Linkedin size={20} className="group-hover:text-white" />
                                 </div>
                                 <div>
                                     <div className="text-xs opacity-60">LinkedIn</div>
-                                    <div className="font-medium">in/yourusername</div>
+                                    <div className="font-medium">{LINKEDIN_USERNAME}</div>
                                 </div>
                             </a>
-                            <a href="mailto:your.email@example.com" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                            <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                                 <Mail size={20} />
-                                <span>your.email@example.com</span>
+                                <span>{EMAIL}</span>
                             </a>
                         </div>
                     </div>
