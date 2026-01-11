@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { Main } from 'next/document';
 import MainContent from './MainContent';
-import { text } from 'stream/consumers';
 
 const Portfolio = () => {
   const [isDark, setIsDark] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
   useEffect(() => {
     const handleScroll = () => {

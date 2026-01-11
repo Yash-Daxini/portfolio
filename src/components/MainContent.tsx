@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import TerminalSection from './TerminalSection'
 import HeroSection from './HeroSection'
 import SkillsSection from './SkillsSection'
@@ -22,10 +22,6 @@ const MainContent: React.FC<MainContentProps> = ({ cardBg, borderColor, accentBg
         link.href = isDark ? '/resume-dark.pdf' : '/resume-light.pdf';
         link.download = `resume-${isDark ? 'dark' : 'light'}.pdf`;
         link.click();
-    };
-
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
