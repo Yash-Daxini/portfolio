@@ -28,12 +28,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
                                 Hello, I'm Yash Daxini
                             </h1>
                             <h2 className="text-2xl md:text-3xl mb-6 opacity-90">
-                                DevOps Engineer & Cloud Architect
+                                Software Engineer | Full-Stack Developer
                             </h2>
                             <p className="text-lg opacity-80 leading-relaxed mb-8">
-                                Transforming infrastructure into code, automating workflows, and building resilient
-                                cloud-native systems. Passionate about Kubernetes, CI/CD, and everything Linux.
-                                I turn complex infrastructure challenges into elegant, scalable solutions.
+                                I build scalable, reliable applications across the full stack using Angular, React, .NET, and Node.js. I’ve worked on multi-tenant systems, POS platforms, smart-home integrations, and applications spanning monolithic, microservices, cloud, and on-premise architectures.
+
+                                I’m actively deepening my expertise in Linux and DevOps—exploring CI/CD, automation, and system reliability—while continuously improving how software is built, deployed, and maintained.
                             </p>
                         </div>
                         <div className="flex flex-wrap gap-4">
