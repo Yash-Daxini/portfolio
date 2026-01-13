@@ -49,15 +49,15 @@ export const PROJECTS = [
 export const SKILLS = {
     devops: {
         icon: <Server size={20} />,
-        items: ['Docker', 'Kubernetes', 'Jenkins', 'GitLab CI/CD', 'Terraform', 'Ansible', 'ArgoCD']
+        items: ['CI/CD Concepts', 'TeamCity (Build & Deployment Pipelines)', 'Docker', 'Deployment Automation']
     },
-    cloud: {
-        icon: <Cloud size={20} />,
-        items: ['AWS', 'Azure', 'GCP', 'DigitalOcean']
-    },
+    // cloud: {
+    //     icon: <Cloud size={20} />,
+    //     items: ['AWS', 'Azure', 'GCP', 'DigitalOcean']
+    // },
     linux: {
         icon: <Monitor size={20} />,
-        items: ['Ubuntu', 'CentOS', 'Arch Linux', 'Shell Scripting', 'System Administration']
+        items: ['Arch Linux','Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting']
     },
     monitoring: {
         icon: <Activity size={20} />,
