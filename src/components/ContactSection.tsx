@@ -1,6 +1,7 @@
 import { EMAIL, GITHUB, GITHUB_USERNAME, LINKEDIN, LINKEDIN_USERNAME } from '@/shared/config'
 import { MessageSquare, Mail, Github, Linkedin } from 'lucide-react'
 import React, { useState } from 'react'
+import emailjs from '@emailjs/browser';
 
 interface ContactSectionProps {
     cardBg: string
@@ -20,12 +21,32 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
 
         setEmailStatus('sending');
 
-        // EmailJS integration
-        setTimeout(() => {
+        const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+        const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+        const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+        if (!serviceId || !templateId || !publicKey)
+            return;
+
+        try {
+            await emailjs.send(
+                serviceId,
+                templateId,
+                {
+                    from_name: emailForm.name,
+                    from_email: emailForm.email,
+                    message: emailForm.message,
+                },
+                publicKey
+            );
+
             setEmailStatus('success');
             setEmailForm({ name: '', email: '', message: '' });
             setTimeout(() => setEmailStatus(''), 3000);
-        }, 1000);
+        } catch (error) {
+            setEmailStatus('error');
+            setTimeout(() => setEmailStatus(''), 3000);
+        }
     };
 
     return (

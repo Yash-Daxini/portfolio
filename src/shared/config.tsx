@@ -1,48 +1,62 @@
-import { Activity, Cloud, Code, Database, Monitor, Server } from 'lucide-react';
+import { Code, Database, Monitor, Server } from 'lucide-react';
 
+interface Project {
+    title: string,
+    description: string,
+    tech: string[],
+    githubLink?: string,
+    liveLink?: string,
 
-export const PROJECTS = [
+}
+
+export const PROJECTS: Project[] = [
     {
-        title: 'Kubernetes Auto-Scaler',
-        desc: 'Custom HPA implementation with predictive scaling based on historical metrics and ML predictions',
-        tech: ['Kubernetes', 'Python', 'Prometheus', 'Go'],
-        github: 'https://github.com/yourusername/k8s-autoscaler',
-        live: '#'
+        title: 'Multi-Tenant POS Platform',
+        description: 'Designed and delivered production-grade features for a scalable POS system supporting multiple tenants, focusing on performance, reliability, and seamless data flow.',
+        tech: ['Angular', '.NET', 'Microservices', 'MSSQL', 'Mongo DB', 'Docker', 'TeamCity']
     },
     {
-        title: 'Multi-Cloud Terraform Modules',
-        desc: 'Reusable IaC modules for deploying infrastructure across AWS, Azure, and GCP with unified configuration',
-        tech: ['Terraform', 'AWS', 'Azure', 'GCP'],
-        github: 'https://github.com/yourusername/terraform-modules',
-        live: '#'
+        title: 'Smart Home Automation Integrations',
+        description: 'Developed HomeSeer plugins enabling integration of smart locks, sensors, Wi-Fi bulbs, and gateways, ensuring fault-tolerant automation and reliable device communication.',
+        tech: ['React', 'C#', '.NET', 'Javascript', 'Jquery', 'Sqlite']
     },
     {
-        title: 'CI/CD Pipeline Automation',
-        desc: 'End-to-end GitOps pipeline with automated testing, security scanning, and deployment',
-        tech: ['GitLab CI', 'Docker', 'ArgoCD', 'Kubernetes'],
-        github: 'https://github.com/yourusername/cicd-automation',
-        live: '#'
+        title: 'Online Ordering Web Platform',
+        description: 'Built responsive and accessible user interfaces for an online ordering system, enhancing customer experience through intuitive design and optimized frontend performance.',
+        tech: ['Angular', 'Typescript', '.NET', 'Mongo DB']
     },
     {
-        title: 'Infrastructure Monitoring Suite',
-        desc: 'Comprehensive monitoring solution with custom dashboards and automated incident response',
-        tech: ['Prometheus', 'Grafana', 'AlertManager', 'Python'],
-        github: 'https://github.com/yourusername/monitoring-suite',
-        live: '#'
+        title: 'Algorithmic Trading Platform',
+        description: 'Contributed to a high-performance trading platform by leading frontend development and optimizing backend data processing using caching techniques.',
+        tech: ['React', '.NET', 'MySQL', 'Redis', 'Docker', 'Node JS']
     },
     {
-        title: 'Container Security Scanner',
-        desc: 'Automated vulnerability scanning tool for Docker images integrated into CI/CD pipeline',
-        tech: ['Python', 'Docker', 'Trivy', 'Jenkins'],
-        github: 'https://github.com/yourusername/container-scanner',
-        live: '#'
+        title: 'CI/CD & Deployment Automation',
+        description: 'Created and maintained automated build and deployment pipelines using TeamCity, improving release consistency, reducing manual effort, and supporting QA and staging environments.',
+        tech: ['CI/CD', 'Docker', 'TeamCity']
     },
     {
-        title: 'Log Aggregation Platform',
-        desc: 'Centralized logging system using ELK stack with custom parsers and visualization',
-        tech: ['Elasticsearch', 'Logstash', 'Kibana', 'Filebeat'],
-        github: 'https://github.com/yourusername/log-platform',
-        live: '#'
+        title: 'Cross-Platform Mobile App Packaging',
+        description: 'Built Android APKs for Angular applications using the',
+        tech: ['Angular', 'Ionic', 'TeamCity']
+    },
+    {
+        title: 'Customizable Event Calendar',
+        description: 'Built a Microsoft Outlook–inspired calendar application featuring recurring events and optimized overlap-detection algorithms, ensuring reliable scheduling and strong performance even with large event datasets.',
+        tech: ['React', '.NET', 'MSSQL'],
+        githubLink: 'https://github.com/Yash-Daxini/Customizable-Event-Calendar-Backend'
+    },
+    {
+        title: 'Distributed Rate Limiter',
+        description: 'Designed and implemented a high-performance distributed rate limiter to control API traffic across multiple servers, using atomic Redis operations and concurrency-safe algorithms for accuracy under heavy load.',
+        tech: ['Typescript', 'Node JS', 'React', 'Redis'],
+        githubLink: 'https://github.com/Yash-Daxini/rate-limiter'
+    },
+    {
+        title: 'Interactive Comment System',
+        description: 'Developed a scalable comment system supporting posts, nested replies, and upvote/downvote functionality, focusing on responsive UI design and efficient backend data handling.',
+        tech: ['React', 'php-slim', 'MySQL',],
+        githubLink: 'https://github.com/Yash-Daxini/comment_system_react-slim'
     }
 ];
 
@@ -51,30 +65,25 @@ export const SKILLS = {
         icon: <Server size={20} />,
         items: ['CI/CD Concepts', 'TeamCity (Build & Deployment Pipelines)', 'Docker', 'Deployment Automation']
     },
-    // cloud: {
-    //     icon: <Cloud size={20} />,
-    //     items: ['AWS', 'Azure', 'GCP', 'DigitalOcean']
-    // },
     linux: {
         icon: <Monitor size={20} />,
-        items: ['Arch Linux','Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting']
-    },
-    monitoring: {
-        icon: <Activity size={20} />,
-        items: ['Prometheus', 'Grafana', 'ELK Stack', 'Datadog']
+        items: ['Arch Linux', 'Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting']
     },
     languages: {
         icon: <Code size={20} />,
-        items: ['Python', 'Bash', 'JavaScript', 'Go', 'YAML']
+        items: ['C#', 'JavaScript', 'TypeScript', 'Java']
     },
     databases: {
         icon: <Database size={20} />,
-        items: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL']
+        items: ['Microsoft SQL Server', 'MySQL', 'MongoDB', 'Redis', 'PostgreSQL']
     }
 };
 
+export const ABOUT = `I build scalable, reliable applications across the full stack using Angular, React, .NET, and Node.js. I’ve worked on multi-tenant systems, POS platforms, smart-home integrations, and applications spanning monolithic, microservices, cloud, and on-premise architectures.
+I’m actively deepening my expertise in Linux and DevOps—exploring CI / CD, automation, and system reliability—while continuously improving how software is built, deployed, and maintained.`
+
 export const EMAIL = "yashdaxini2003@gmail.com";
 export const GITHUB = "https://github.com/Yash-Daxini";
-export const LINKEDIN = "linkedin.com/in/yash-daxini";
+export const LINKEDIN = "https://linkedin.com/in/yash-daxini";
 export const GITHUB_USERNAME = "Yash-Daxini"
 export const LINKEDIN_USERNAME = "in/yash-daxini";

@@ -1,4 +1,4 @@
-import { EMAIL, GITHUB, LINKEDIN, PROJECTS, SKILLS } from '@/shared/config';
+import { ABOUT, EMAIL, GITHUB, LINKEDIN, PROJECTS, SKILLS } from '@/shared/config';
 import { Terminal } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
@@ -23,9 +23,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
 
     const commands = {
         help: () => 'Available commands: about, skills, projects, contact, clear, resume, theme',
-        about: () => 'DevOps Engineer passionate about automation, cloud infrastructure, and Linux systems. Building scalable and reliable solutions.',
+        about: () => ABOUT,
         skills: () => Object.entries(SKILLS).map(([cat, data]) => `${cat.toUpperCase()}: ${data.items.join(', ')}`).join('\n'),
-        projects: () => PROJECTS.map((p, i) => `${i + 1}. ${p.title}\n   ${p.desc}\n   Tech: ${p.tech.join(', ')}`).join('\n\n'),
+        projects: () => PROJECTS.map((p, i) => `${i + 1}. ${p.title}\n   ${p.description}\n   Tech: ${p.tech.join(', ')}`).join('\n\n'),
         contact: () => `Email: ${EMAIL}\nGitHub: ${GITHUB}\nLinkedIn: ${LINKEDIN}'`,
         clear: () => 'CLEAR',
         resume: () => 'Opening resume download...',
