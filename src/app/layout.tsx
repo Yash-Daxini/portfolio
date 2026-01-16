@@ -2,44 +2,61 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Your Name | DevOps Engineer & Cloud Architect',
-  description: 'DevOps Engineer specializing in Kubernetes, AWS, Terraform, CI/CD automation, and cloud-native infrastructure. Building scalable systems.',
+  title: 'Yash Daxini | Full Stack & DevOps Engineer',
+  description:
+    'Full Stack and DevOps Engineer building scalable web applications and distributed systems. Experienced in React, Node.js, TypeScript, Redis, Linux, and cloud-native architecture with a strong focus on performance, reliability, and system design.',
   keywords: [
+    'Yash Daxini',
+    'Full Stack Developer',
+    'Frontend Developer',
+    'Backend Developer',
     'DevOps Engineer',
-    'Cloud Architect',
-    'Kubernetes',
+    'Distributed Systems',
+    'System Design',
+    'React',
+    'Node.js',
+    'TypeScript',
+    'Redis',
+    'Rate Limiter',
+    'Event Calendar Application',
+    'API Rate Limiting',
+    'Microservices',
     'Docker',
-    'AWS',
-    'Terraform',
-    'CI/CD',
-    'Infrastructure as Code',
-    'Linux System Administrator',
-    'Arch Linux'
+    'Kubernetes',
+    'Linux',
+    'Arch Linux',
+    'Web Performance Optimization'
   ],
-  authors: [{ name: 'Your Name' }],
-  creator: 'Your Name',
-  publisher: 'Your Name',
+  authors: [{ name: 'Yash Daxini' }],
+  creator: 'Yash Daxini',
+  publisher: 'Yash Daxini',
+
   openGraph: {
-    title: 'Your Name | DevOps Engineer',
-    description: 'Building scalable cloud infrastructure and automating everything',
+    title: 'Yash Daxini | Full Stack & DevOps Engineer',
+    description:
+      'Building high-performance web applications and distributed systems. Projects include a POS system, a distributed rate limiter, and a scalable comment system.',
     url: 'https://yourportfolio.com',
-    siteName: 'Your Name Portfolio',
+    siteName: 'Yash Daxini Portfolio',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
+        alt: 'Yash Daxini Portfolio Open Graph Image',
       },
     ],
     locale: 'en_US',
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Your Name | DevOps Engineer',
-    description: 'Building scalable cloud infrastructure',
+    title: 'Yash Daxini | Full Stack & DevOps Engineer',
+    description:
+      'Full Stack & DevOps Engineer building scalable systems, distributed rate limiters, and performance-focused web applications.',
     images: ['/og-image.png'],
   },
+
   robots: {
     index: true,
     follow: true,
@@ -52,6 +69,7 @@ export const metadata: Metadata = {
     },
   },
 }
+
 
 export default function RootLayout({
   children,
