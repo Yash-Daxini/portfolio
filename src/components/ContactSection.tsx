@@ -136,10 +136,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
                                     <div className="font-medium">{LINKEDIN_USERNAME}</div>
                                 </div>
                             </a>
-                            <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                                <Mail size={20} />
-                                <span>{EMAIL}</span>
-                            </a>
                         </div>
                     </div>
                     <div className={`border-t ${borderColor} pt-6`}>
