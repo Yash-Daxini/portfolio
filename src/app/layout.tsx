@@ -2,39 +2,71 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Yash Daxini | Full Stack & DevOps Engineer',
+  title: 'Yash Daxini | Full Stack Software Engineer',
   description:
-    'Full Stack and DevOps Engineer building scalable web applications and distributed systems. Experienced in React, Node.js, TypeScript, Redis, Linux, and cloud-native architecture with a strong focus on performance, reliability, and system design.',
+    'Yash Daxini is a Full Stack Software Engineer experienced in building scalable web applications, distributed systems, and backend services, with hands-on experience in Docker, Kubernetes, and CI/CD, and actively learning DevOps and cloud technologies.',
   keywords: [
+    // Personal branding (very important)
     'Yash Daxini',
+    'Yash Daxini Software Engineer',
+    'Yash Daxini Full Stack Developer',
+
+    // Primary role
     'Full Stack Developer',
-    'Frontend Developer',
+    'Software Engineer',
     'Backend Developer',
-    'DevOps Engineer',
-    'Distributed Systems',
-    'System Design',
+    'Frontend Developer',
+    'Junior Software Engineer',
+
+    // Frontend & Backend
+    'JavaScript',
+    'TypeScript',
     'React',
     'Node.js',
-    'TypeScript',
-    'Redis',
-    'Rate Limiter',
-    'Event Calendar Application',
-    'API Rate Limiting',
+    'REST APIs',
     'Microservices',
+    'Monolith Architecture',
+    'Web Application Development',
+
+    // Distributed systems & backend concepts
+    'Distributed Systems',
+    'Rate Limiting',
+    'High Concurrency Systems',
+    'System Design',
+    'Scalable Backend',
+
+    // Containers & DevOps (learning / working knowledge)
     'Docker',
     'Kubernetes',
+    'CI/CD',
+    'TeamCity',
+    'Containerized Applications',
+
+    // Linux
     'Linux',
+    'Linux System Administration',
     'Arch Linux',
-    'Web Performance Optimization'
+    'Ubuntu',
+    'Shell Scripting',
+
+    // Databases
+    'PostgreSQL',
+    'MySQL',
+    'MongoDB',
+    'Redis',
+
+    // Credibility & legacy SEO terms
+    'Problem Solver',
+    'Software Development',
+    'Full Stack Web Developer'
   ],
   authors: [{ name: 'Yash Daxini' }],
   creator: 'Yash Daxini',
   publisher: 'Yash Daxini',
-
   openGraph: {
-    title: 'Yash Daxini | Full Stack & DevOps Engineer',
+    title: 'Yash Daxini | Full Stack Software Engineer',
     description:
-      'Building high-performance web applications and distributed systems. Projects include a POS system, a distributed rate limiter, and a scalable comment system.',
+      'Full Stack Software Engineer building scalable web applications and distributed systems, with hands-on experience in Docker, Kubernetes, and modern backend development.',
     url: 'https://yourportfolio.com',
     siteName: 'Yash Daxini Portfolio',
     images: [
@@ -42,21 +74,19 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Yash Daxini Portfolio Open Graph Image',
+        alt: 'Yash Daxini Portfolio',
       },
     ],
     locale: 'en_US',
     type: 'website',
   },
-
   twitter: {
     card: 'summary_large_image',
-    title: 'Yash Daxini | Full Stack & DevOps Engineer',
+    title: 'Yash Daxini | Full Stack Software Engineer',
     description:
-      'Full Stack & DevOps Engineer building scalable systems, distributed rate limiters, and performance-focused web applications.',
+      'Full Stack Engineer focused on scalable web apps, backend systems, and learning DevOps with Docker and Kubernetes.',
     images: ['/og-image.png'],
   },
-
   robots: {
     index: true,
     follow: true,
@@ -70,7 +100,6 @@ export const metadata: Metadata = {
   },
 }
 
-
 export default function RootLayout({
   children,
 }: {
@@ -80,6 +109,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href="https://yourportfolio.com" />
+        <link rel="icon" href="/favicon.png" type="image/svg+xml" />
+        {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
       </head>
       <body>{children}</body>
     </html>

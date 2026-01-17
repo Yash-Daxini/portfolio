@@ -80,7 +80,7 @@ export const SKILLS = {
 };
 
 export const ABOUT = `I build scalable, reliable applications across the full stack using Angular, React, .NET, and Node.js. I’ve worked on multi-tenant systems, POS platforms, smart-home integrations, and applications spanning monolithic, microservices, cloud, and on-premise architectures.
-I’m actively deepening my expertise in Linux and DevOps—exploring CI / CD, automation, and system reliability—while continuously improving how software is built, deployed, and maintained.`
+I’m actively deepening my expertise in Linux and DevOps, exploring CI / CD, automation, and system reliability while continuously improving how software is built, deployed, and maintained.`
 
 export const EMAIL = "yashdaxini2003@gmail.com";
 export const GITHUB = "https://github.com/Yash-Daxini";
