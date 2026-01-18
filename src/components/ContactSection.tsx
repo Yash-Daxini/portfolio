@@ -109,7 +109,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
                     <div className={`${cardBg} border ${borderColor} rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500`}>
                         <h3 className="font-bold mb-4">Direct Contact</h3>
                         <div className="space-y-4">
-                            <a href="mailto:your.email@example.com" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                            <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
                                 <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
                                     <Mail size={20} className="group-hover:text-white" />
                                 </div>

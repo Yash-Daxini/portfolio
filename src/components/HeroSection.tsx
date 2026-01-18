@@ -105,7 +105,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="opacity-70">Projects:</span>
-                                <span className={accentColor}>{PROJECTS.length} Active</span>
+                                <span className={accentColor}>{PROJECTS.length}</span>
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="opacity-70">Availability:</span>
@@ -125,16 +125,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
                             <div className="space-y-2">
                                 <div>
                                     <div className="flex justify-between text-xs mb-1">
-                                        <span>DevOps</span>
-                                        <span className={accentColor}>95%</span>
-                                    </div>
-                                    <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2`}>
-                                        <div className={`${accentBg} h-2 rounded-full transition-all duration-1000`} style={{ width: '95%' }}></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between text-xs mb-1">
-                                        <span>Cloud</span>
+                                        <span>Full Stack Development</span>
                                         <span className={accentColor}>90%</span>
                                     </div>
                                     <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2`}>
@@ -143,11 +134,20 @@ const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor
                                 </div>
                                 <div>
                                     <div className="flex justify-between text-xs mb-1">
-                                        <span>Linux</span>
-                                        <span className={accentColor}>92%</span>
+                                        <span>DevOps</span>
+                                        <span className={accentColor}>80%</span>
                                     </div>
                                     <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2`}>
-                                        <div className={`${accentBg} h-2 rounded-full transition-all duration-1000`} style={{ width: '92%' }}></div>
+                                        <div className={`${accentBg} h-2 rounded-full transition-all duration-1000`} style={{ width: '80%' }}></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-xs mb-1">
+                                        <span>Linux</span>
+                                        <span className={accentColor}>82%</span>
+                                    </div>
+                                    <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2`}>
+                                        <div className={`${accentBg} h-2 rounded-full transition-all duration-1000`} style={{ width: '82%' }}></div>
                                     </div>
                                 </div>
                             </div>

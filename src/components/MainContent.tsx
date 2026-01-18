@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import TerminalSection from './TerminalSection'
 import HeroSection from './HeroSection'
 import SkillsSection from './SkillsSection'
-import Porjects from './Porjects'
+import Projects from './Projects'
 import ContactSection from './ContactSection'
 
 interface MainContentProps {
@@ -88,7 +88,7 @@ const MainContent: React.FC<MainContentProps> = ({ cardBg, borderColor, accentBg
                 borderColor={borderColor}
                 isDark={isDark} />
 
-            <Porjects
+            <Projects
                 cardBg={cardBg}
                 accentColor={accentColor}
                 borderColor={borderColor} />

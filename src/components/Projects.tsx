@@ -8,7 +8,7 @@ interface ProjectsProps {
     borderColor: string
 }
 
-const Porjects: React.FC<ProjectsProps> = ({ cardBg, accentColor, borderColor }: ProjectsProps) => {
+const Projects: React.FC<ProjectsProps> = ({ cardBg, accentColor, borderColor }: ProjectsProps) => {
     return (
         <section id="projects" className="mb-20">
             <div className="flex items-center gap-3 mb-6">
@@ -64,4 +64,4 @@ const Porjects: React.FC<ProjectsProps> = ({ cardBg, accentColor, borderColor }:
     )
 }
 
-export default Porjects
+export default Projects
