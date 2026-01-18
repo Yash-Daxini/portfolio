@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ cardBg, borderColor, accentBg, accentCo
                             </div>
                             <div>
                                 <div className="font-mono font-bold text-lg">Yash Daxini</div>
-                                <div className={`text-xs ${accentColor} font-mono`}>DevOps Engineer</div>
+                                <div className={`text-xs ${accentColor} font-mono`}>Software Engineer</div>
                             </div>
                         </div>
 

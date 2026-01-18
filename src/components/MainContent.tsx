@@ -40,7 +40,6 @@ const MainContent: React.FC<MainContentProps> = ({ cardBg, borderColor, accentBg
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Replace the downloadResume function
     const downloadResume = (theme?: 'dark' | 'light') => {
         const resumeTheme = theme || (isDark ? 'dark' : 'light');
         const link = document.createElement('a');
@@ -49,14 +48,6 @@ const MainContent: React.FC<MainContentProps> = ({ cardBg, borderColor, accentBg
         link.click();
         setShowResumeMenu(false);
     };
-
-
-    // const downloadResume = () => {
-    //     const link = document.createElement('a');
-    //     link.href = isDark ? '/resume-dark.pdf' : '/resume-light.pdf';
-    //     link.download = `resume-${isDark ? 'dark' : 'light'}.pdf`;
-    //     link.click();
-    // };
 
     return (
         <main className="container mx-auto px-6 py-12">
