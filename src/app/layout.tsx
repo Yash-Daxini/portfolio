@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     title: 'Yash Daxini | Full Stack Software Engineer',
     description:
       'Full Stack Software Engineer building scalable web applications and distributed systems, with hands-on experience in Docker, Kubernetes, and modern backend development.',
-    url: 'https://yourportfolio.com',
+    url: 'https://yashdaxini.tech/',
     siteName: 'Yash Daxini Portfolio',
     images: [
       {
@@ -108,7 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href="https://yourportfolio.com" />
+        <link rel="canonical" href="https://yashdaxini.tech/" />
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
         {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
       </head>
