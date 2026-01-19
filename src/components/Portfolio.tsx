@@ -7,11 +7,7 @@ import MainContent from './MainContent';
 
 const Portfolio = () => {
   const [isDark, setIsDark] = useState(true);
-  const [showScrollTop, setShowScrollTop] = useState(false);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const [, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
