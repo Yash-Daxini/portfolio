@@ -32,12 +32,15 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         theme: () => 'Theme toggled!'
     };
 
-    const handleTerminalSubmit = (e: any) => {
+    const handleTerminalSubmit = (e: any, cmdKey: string = "") => {
         e.preventDefault();
-        if (!terminalInput.trim()) return;
 
-        const cmd = terminalInput.toLowerCase().trim();
-        const newHistory = [...terminalHistory, { type: 'input', text: `$ ${terminalInput}` }];
+        if (!terminalInput.trim() && cmdKey === "") return;
+
+        const terminalInputText = terminalInput ? terminalInput : cmdKey;
+
+        const cmd = terminalInput.toLowerCase().trim() || cmdKey.toLowerCase().trim();
+        const newHistory = [...terminalHistory, { type: 'input', text: `$ ${terminalInputText}` }];
 
         if (cmd === 'clear') {
             setTerminalHistory([]);
@@ -112,8 +115,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                 {Object.keys(commands).map(cmd => (
                     <button
                         key={cmd}
-                        onClick={() => {
+                        onClick={(e) => {
                             setTerminalInput(cmd);
+                            handleTerminalSubmit(e, cmd);
                         }}
                         className={`px-3 py-1 rounded-lg border ${borderColor} hover:${accentBg} hover:text-white transition-all text-xs font-mono hover:scale-105`}
                     >
