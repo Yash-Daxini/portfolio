@@ -1,7 +1,17 @@
 import { ABOUT, EMAIL, GITHUB, LINKEDIN, PROJECTS, SKILLS } from '@/shared/config';
 import { Terminal } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
+interface TerminalData{
+    type: string,
+    text: string,
+    result?: TerminalResult
+}
+
+interface TerminalResult{
+    type: string,
+    content: string
+}
 interface TerminalSectionProps {
     cardBg: string
     accentBg: string
@@ -16,20 +26,162 @@ interface TerminalSectionProps {
 const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, textColor, isDark, setIsDark, downloadResume }: TerminalSectionProps) => {
 
     const [terminalInput, setTerminalInput] = useState('');
-    const [terminalHistory, setTerminalHistory] = useState([
-        { type: 'system', text: 'Welcome to my portfolio! Type "help" for available commands.' }
+    const [terminalHistory, setTerminalHistory] = useState<TerminalData[]>([
+        { 
+            type: 'system', 
+            text: `Last login: ${new Date().toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n` 
+        }
     ]);
     const terminalEndRef = useRef<any>(null);
+    const [lastLoggedInDate, setLastLoggedInDate] = useState<string>();
+
+    useEffect(() => {
+        terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        setLastLoggedInDate(new Date().toString());
+    }, [terminalHistory]);
 
     const commands = {
-        help: () => 'Available commands: about, skills, projects, contact, clear, resume, theme',
-        about: () => ABOUT,
-        skills: () => Object.entries(SKILLS).map(([cat, data]) => `${cat.toUpperCase()}: ${data.items.join(', ')}`).join('\n'),
-        projects: () => PROJECTS.map((p, i) => `${i + 1}. ${p.title}\n   ${p.description}\n   Tech: ${p.tech.join(', ')}`).join('\n\n'),
-        contact: () => `Email: ${EMAIL}\nGitHub: ${GITHUB}\nLinkedIn: ${LINKEDIN}'`,
-        clear: () => 'CLEAR',
-        resume: () => 'Opening resume download...',
-        theme: () => 'Theme toggled!'
+        help: () => ({
+            type: 'help',
+            content: [
+                { cmd: 'about', desc: 'Display information about me' },
+                { cmd: 'skills', desc: 'List technical skills and expertise' },
+                { cmd: 'projects', desc: 'Show featured projects' },
+                { cmd: 'contact', desc: 'Get contact information' },
+                { cmd: 'resume', desc: 'Download resume' },
+                { cmd: 'theme', desc: 'Toggle dark/light theme' },
+                { cmd: 'clear', desc: 'Clear terminal screen' },
+                { cmd: 'whoami', desc: 'Print current user' },
+                { cmd: 'date', desc: 'Display current date and time' }
+            ]
+        }),
+        about: () => ({
+            type: 'text',
+            content: ABOUT
+        }),
+        skills: () => ({
+            type: 'skills',
+            content: SKILLS
+        }),
+        projects: () => ({
+            type: 'projects',
+            content: PROJECTS
+        }),
+        contact: () => ({
+            type: 'contact',
+            content: {
+                email: EMAIL,
+                github: GITHUB,
+                linkedin: LINKEDIN
+            }
+        }),
+        clear: () => ({ type: 'clear' }),
+        resume: () => ({
+            type: 'text',
+            content: 'Downloading resume...'
+        }),
+        theme: () => ({
+            type: 'text',
+            content: `Theme switched to ${isDark ? 'light' : 'dark'} mode`
+        }),
+        whoami: () => ({
+            type: 'text',
+            content: 'yash-daxini'
+        }),
+        date: () => ({
+            type: 'text',
+            content: lastLoggedInDate
+        })
+    };
+
+    const renderOutput = (item: any) => {
+        const result = item.result;
+        
+        if (!result) return null;
+
+        switch (result.type) {
+            case 'help':
+                return (
+                    <div className="mt-2 space-y-1">
+                        <div className="text-cyan-400 font-bold mb-2">Available Commands:</div>
+                        {result.content.map((cmd: any, i: number) => (
+                            <div key={i} className="flex gap-4 pl-4">
+                                <span className="text-green-400 font-bold w-20">{cmd.cmd}</span>
+                                <span className="opacity-70">{cmd.desc}</span>
+                            </div>
+                        ))}
+                    </div>
+                );
+
+            case 'skills':
+                return (
+                    <div className="mt-2 space-y-3">
+                        {Object.entries(result.content).map(([category, data]: [string, any]) => (
+                            <div key={category}>
+                                <div className="text-cyan-400 font-bold flex items-center gap-2 mb-1">
+                                    ├─ {category.toUpperCase()}
+                                </div>
+                                <div className="pl-6 flex flex-wrap gap-2">
+                                    {data.items.map((skill: string, i: number) => (
+                                        <span key={i} className="text-green-400">
+                                            • {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                );
+
+            case 'projects':
+                return (
+                    <div className="mt-2 space-y-4">
+                        {result.content.map((project: any, i: number) => (
+                            <div key={i} className="border-l-2 border-cyan-400 pl-4">
+                                <div className="text-cyan-400 font-bold">
+                                    [{i + 1}] {project.title}
+                                </div>
+                                <div className="opacity-70 text-sm mt-1">{project.description}</div>
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {project.tech.map((tech: string, j: number) => (
+                                        <span key={j} className="text-yellow-400 text-xs">
+                                            #{tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                );
+
+            case 'contact':
+                return (
+                    <div className="mt-2 space-y-2 pl-4">
+                        <div className="flex items-center gap-3">
+                            <span className="text-cyan-400 font-bold w-24">Email:</span>
+                            <span className="text-green-400">{result.content.email}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <span className="text-cyan-400 font-bold w-24">GitHub:</span>
+                            <span className="text-green-400">{result.content.github}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <span className="text-cyan-400 font-bold w-24">LinkedIn:</span>
+                            <span className="text-green-400">{result.content.linkedin}</span>
+                        </div>
+                    </div>
+                );
+
+            case 'text':
+                return (
+                    <div className="mt-1 opacity-80">
+                        {result.content}
+                    </div>
+                );
+
+            default:
+                return null;
+        }
     };
 
     const handleTerminalSubmit = (e: any, cmdKey: string = "") => {
@@ -38,28 +190,34 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         if (!terminalInput.trim() && cmdKey === "") return;
 
         const terminalInputText = terminalInput ? terminalInput : cmdKey;
-
         const cmd = terminalInput.toLowerCase().trim() || cmdKey.toLowerCase().trim();
-        const newHistory = [...terminalHistory, { type: 'input', text: `$ ${terminalInputText}` }];
+        
+        const newEntry: any = { 
+            type: 'input', 
+            text: terminalInputText,
+            timestamp: new Date().toLocaleTimeString()
+        };
 
         if (cmd === 'clear') {
             setTerminalHistory([]);
+            setTerminalInput('');
+            return;
         } else if (cmd === 'theme') {
             setIsDark(!isDark);
-            newHistory.push({ type: 'output', text: commands.theme() });
-            setTerminalHistory(newHistory);
+            newEntry.result = commands.theme();
         } else if (cmd === 'resume') {
             downloadResume();
-            newHistory.push({ type: 'output', text: commands.resume() });
-            setTerminalHistory(newHistory);
+            newEntry.result = commands.resume();
         } else if (cmd in commands) {
-            newHistory.push({ type: 'output', text: commands[cmd as keyof typeof commands]() });
-            setTerminalHistory(newHistory);
+            newEntry.result = commands[cmd as keyof typeof commands]();
         } else {
-            newHistory.push({ type: 'error', text: `Command not found: ${cmd}. Type "help" for available commands.` });
-            setTerminalHistory(newHistory);
+            newEntry.result = {
+                type: 'error',
+                content: `zsh: command not found: ${cmd}`
+            };
         }
 
+        setTerminalHistory([...terminalHistory, newEntry]);
         setTerminalInput('');
     };
 
@@ -70,6 +228,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                 <h2 className="text-3xl font-bold">Interactive Terminal</h2>
             </div>
             <div className={`${cardBg} border ${borderColor} rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
+                {/* Terminal Header */}
                 <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
                     <div className="flex items-center gap-3">
                         <div className="flex gap-2">
@@ -77,31 +236,54 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                             <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
                             <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
                         </div>
-                        <span className="font-mono text-sm ml-2 opacity-70">root@portfolio: ~</span>
+                        <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
                     </div>
-                    <div className="text-xs opacity-60 font-mono">Type 'help' for commands</div>
+                    <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
                 </div>
 
-                <div className={`p-6 font-mono text-sm ${isDark ? 'bg-gray-800' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
+                {/* Terminal Body */}
+                <div className={`p-4 sm:p-6 font-mono text-xs sm:text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
                     {terminalHistory.map((item, i) => (
-                        <div key={i} className={`mb-2 animate-fade-in ${item.type === 'error' ? 'text-red-400' :
-                            item.type === 'input' ? accentColor :
-                                item.type === 'system' ? 'text-green-400' :
-                                    'opacity-80'
-                            }`}>
-                            <pre className="whitespace-pre-wrap break-words font-mono">{item.text}</pre>
+                        <div key={i} className="mb-4">
+                            {item.type === 'system' ? (
+                                <div className="text-green-400 whitespace-pre-wrap">
+                                    {item.text}
+                                </div>
+                            ) : (
+                                <>
+                                    {/* Command Input Line */}
+                                    <div className="flex items-start gap-2 mb-1">
+                                        <span className="text-green-400 shrink-0">➜</span>
+                                        <span className="text-cyan-400 shrink-0">~</span>
+                                        <span className={accentColor}>{item.text}</span>
+                                    </div>
+                                    
+                                    {/* Command Output */}
+                                    {item.result && (
+                                        <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
+                                            {item.result.type === 'error' ? (
+                                                item.result.content
+                                            ) : (
+                                                renderOutput(item)
+                                            )}
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     ))}
 
-                    <div className="flex items-center gap-2 mt-4">
-                        <span className={accentColor}>$</span>
+                    {/* Input Line */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-green-400">➜</span>
+                        <span className="text-cyan-400">~</span>
                         <input
                             type="text"
                             value={terminalInput}
                             onChange={(e) => setTerminalInput(e.target.value)}
                             onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
                             className={`flex-1 bg-transparent outline-none ${textColor} font-mono`}
-                            placeholder="Type a command..."
+                            placeholder="type a command..."
                             autoFocus
                         />
                     </div>
@@ -110,18 +292,18 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
             </div>
 
             {/* Quick Commands */}
-            <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-sm opacity-60">Quick commands:</span>
-                {Object.keys(commands).map(cmd => (
+            <div className="mt-4 flex flex-wrap gap-2 items-center">
+                <span className="text-sm opacity-60 hidden sm:inline">Quick commands:</span>
+                {Object.keys(commands).filter(cmd => cmd !== 'clear' && cmd !== 'whoami' && cmd !== 'date').map(cmd => (
                     <button
                         key={cmd}
                         onClick={(e) => {
                             setTerminalInput(cmd);
                             handleTerminalSubmit(e, cmd);
                         }}
-                        className={`px-3 py-1 rounded-lg border ${borderColor} hover:${accentBg} hover:${isDark ? 'text-white' : 'text-dark'} transition-all text-xs font-mono hover:scale-105`}
+                        className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-xs font-mono hover:scale-105`}
                     >
-                        {cmd}
+                        $ {cmd}
                     </button>
                 ))}
             </div>
