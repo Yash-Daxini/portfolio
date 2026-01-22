@@ -119,7 +119,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                             setTerminalInput(cmd);
                             handleTerminalSubmit(e, cmd);
                         }}
-                        className={`px-3 py-1 rounded-lg border ${borderColor} hover:${accentBg} hover:text-white transition-all text-xs font-mono hover:scale-105`}
+                        className={`px-3 py-1 rounded-lg border ${borderColor} hover:${accentBg} hover:${isDark ? 'text-white' : 'text-dark'} transition-all text-xs font-mono hover:scale-105`}
                     >
                         {cmd}
                     </button>
