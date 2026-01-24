@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     siteName: 'Yash Daxini Portfolio',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://yashdaxini.tech/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Yash Daxini Portfolio',
@@ -110,7 +110,6 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://yashdaxini.tech/" />
         <link rel="icon" href="/favicon.png" type="image/svg+xml" />
-        {/* <link rel="icon" href="/favicon.ico" sizes="any" /> */}
       </head>
       <body>{children}</body>
     </html>
