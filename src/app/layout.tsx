@@ -72,6 +72,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://yashdaxini.tech/og-image.png',
+        secureUrl: 'https://yashdaxini.tech/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Yash Daxini Portfolio',
