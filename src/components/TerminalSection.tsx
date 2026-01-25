@@ -2,13 +2,13 @@ import { ABOUT, EMAIL, GITHUB, LINKEDIN, PROJECTS, SKILLS } from '@/shared/confi
 import { Terminal } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
-interface TerminalData{
+interface TerminalData {
     type: string,
     text: string,
     result?: TerminalResult
 }
 
-interface TerminalResult{
+interface TerminalResult {
     type: string,
     content: string
 }
@@ -25,19 +25,26 @@ interface TerminalSectionProps {
 
 const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, textColor, isDark, setIsDark, downloadResume }: TerminalSectionProps) => {
 
+    const [lastLoggedInDate, setLastLoggedInDate] = useState<Date>(new Date());
     const [terminalInput, setTerminalInput] = useState('');
     const [terminalHistory, setTerminalHistory] = useState<TerminalData[]>([
-        { 
-            type: 'system', 
-            text: `Last login: ${new Date().toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n` 
+        {
+            type: 'system',
+            text: `Last login: ${lastLoggedInDate.toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n`
         }
     ]);
     const terminalEndRef = useRef<any>(null);
-    const [lastLoggedInDate, setLastLoggedInDate] = useState<string>();
+    const terminalContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        setLastLoggedInDate(new Date().toString());
+        if (terminalContainerRef.current && terminalEndRef.current) {
+            terminalEndRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest'
+            });
+        }
+        setLastLoggedInDate(new Date());
     }, [terminalHistory]);
 
     const commands = {
@@ -96,7 +103,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
 
     const renderOutput = (item: any) => {
         const result = item.result;
-        
+
         if (!result) return null;
 
         switch (result.type) {
@@ -191,9 +198,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
 
         const terminalInputText = terminalInput ? terminalInput : cmdKey;
         const cmd = terminalInput.toLowerCase().trim() || cmdKey.toLowerCase().trim();
-        
-        const newEntry: any = { 
-            type: 'input', 
+
+        const newEntry: any = {
+            type: 'input',
             text: terminalInputText,
             timestamp: new Date().toLocaleTimeString()
         };
@@ -222,7 +229,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
     };
 
     return (
-        <section className="mb-20">
+        <section className="mb-20" ref={terminalContainerRef}>
             <div className="flex items-center gap-3 mb-6">
                 <Terminal className={accentColor} size={28} />
                 <h2 className="text-3xl font-bold">Interactive Terminal</h2>
@@ -257,7 +264,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                                         <span className="text-cyan-400 shrink-0">~</span>
                                         <span className={accentColor}>{item.text}</span>
                                     </div>
-                                    
+
                                     {/* Command Output */}
                                     {item.result && (
                                         <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
