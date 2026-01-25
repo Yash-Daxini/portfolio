@@ -71,8 +71,8 @@ export const metadata: Metadata = {
     siteName: 'Yash Daxini Portfolio',
     images: [
       {
-        url: 'https://yashdaxini.tech/og-image.png',
-        secureUrl: 'https://yashdaxini.tech/og-image.png',
+        url: 'https://yashdaxini.tech/og-image-v1.png',
+        secureUrl: 'https://yashdaxini.tech/og-image-v1.png',
         width: 1200,
         height: 630,
         alt: 'Yash Daxini Portfolio',
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
     title: 'Yash Daxini | Full Stack Software Engineer',
     description:
       'Full Stack Engineer focused on scalable web apps, backend systems, and learning DevOps with Docker and Kubernetes.',
-    images: ['/og-image.png'],
+    images: ['https://yashdaxini.tech/og-image-v1.png'],
   },
   robots: {
     index: true,
