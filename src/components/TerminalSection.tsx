@@ -30,6 +30,10 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
     const [terminalHistory, setTerminalHistory] = useState<TerminalData[]>([]);
     const terminalEndRef = useRef<any>(null);
     const terminalContainerRef = useRef<HTMLDivElement>(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [commandHistory, setCommandHistory] = useState<string[]>([]);
+    const [historyIndex, setHistoryIndex] = useState(-1);
+
 
     useEffect(() => {
         if (terminalContainerRef.current && terminalEndRef.current) {
@@ -60,6 +64,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                 { cmd: 'contact', desc: 'Get contact information' },
                 { cmd: 'resume', desc: 'Download resume' },
                 { cmd: 'theme', desc: 'Toggle dark/light theme' },
+                { cmd: 'fullscreen', desc: 'Toggle fullscreen mode (or use fs)' },
                 { cmd: 'clear', desc: 'Clear terminal screen' },
                 { cmd: 'whoami', desc: 'Print current user' },
                 { cmd: 'date', desc: 'Display current date and time' }
@@ -202,6 +207,12 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         const terminalInputText = terminalInput ? terminalInput : cmdKey;
         const cmd = terminalInput.toLowerCase().trim() || cmdKey.toLowerCase().trim();
 
+        // Add to command history (only if typing, not from quick commands)
+        if (terminalInput && !commandHistory.includes(terminalInputText)) {
+            setCommandHistory([...commandHistory, terminalInputText]);
+        }
+        setHistoryIndex(-1);
+
         const newEntry: any = {
             type: 'input',
             text: terminalInputText,
@@ -218,6 +229,12 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         } else if (cmd === 'resume') {
             downloadResume();
             newEntry.result = commands.resume();
+        } else if (cmd === 'fullscreen' || cmd === 'fs') {
+            setIsFullscreen(!isFullscreen);
+            newEntry.result = {
+                type: 'text',
+                content: `Fullscreen mode ${!isFullscreen ? 'enabled' : 'disabled'}`
+            };
         } else if (cmd in commands) {
             newEntry.result = commands[cmd as keyof typeof commands]();
         } else {
@@ -231,93 +248,206 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         setTerminalInput('');
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (commandHistory.length > 0) {
+                const newIndex = historyIndex < commandHistory.length - 1 ? historyIndex + 1 : historyIndex;
+                setHistoryIndex(newIndex);
+                setTerminalInput(commandHistory[commandHistory.length - 1 - newIndex]);
+            }
+        } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIndex > 0) {
+                const newIndex = historyIndex - 1;
+                setHistoryIndex(newIndex);
+                setTerminalInput(commandHistory[commandHistory.length - 1 - newIndex]);
+            } else if (historyIndex === 0) {
+                setHistoryIndex(-1);
+                setTerminalInput('');
+            }
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            setIsFullscreen(false);
+        }
+    };
+
     return (
-        <section className="mb-20" ref={terminalContainerRef}>
-            <div className="flex items-center gap-3 mb-6">
-                <Terminal className={accentColor} size={28} />
-                <h2 className="text-3xl font-bold">Interactive Terminal</h2>
-            </div>
-            <div className={`${cardBg} border ${borderColor} rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
-                {/* Terminal Header */}
-                <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
-                    <div className="flex items-center gap-3">
-                        <div className="flex gap-2">
-                            <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-colors"></div>
-                            <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
-                            <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
-                        </div>
-                        <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
-                    </div>
-                    <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
-                </div>
-
-                {/* Terminal Body */}
-                <div className={`p-4 sm:p-6 font-mono text-xs sm:text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
-                    {terminalHistory.map((item, i) => (
-                        <div key={i} className="mb-4">
-                            {item.type === 'system' ? (
-                                <div className="text-green-400 whitespace-pre-wrap">
-                                    {item.text}
+        <>
+            {/* Fullscreen Overlay */}
+            {isFullscreen && (
+                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm animate-fade-in" ref={terminalContainerRef}>
+                    <div className="h-full flex flex-col p-4">
+                        {/* Fullscreen Terminal Header */}
+                        <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor} rounded-t-xl`}>
+                            <div className="flex items-center gap-3">
+                                <div className="flex gap-2">
+                                    <div onClick={() => setIsFullscreen(false)} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-colors"></div>
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
+                                    <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
                                 </div>
-                            ) : (
-                                <>
-                                    {/* Command Input Line */}
-                                    <div className="flex items-start gap-2 mb-1">
-                                        <span className="text-green-400 shrink-0">➜</span>
-                                        <span className="text-cyan-400 shrink-0">~</span>
-                                        <span className={accentColor}>{item.text}</span>
-                                    </div>
-
-                                    {/* Command Output */}
-                                    {item.result && (
-                                        <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
-                                            {item.result.type === 'error' ? (
-                                                item.result.content
-                                            ) : (
-                                                renderOutput(item)
-                                            )}
-                                        </div>
-                                    )}
-                                </>
-                            )}
+                                <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio [FULLSCREEN]</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
+                                <button
+                                    onClick={() => setIsFullscreen(false)}
+                                    className="text-xs font-mono px-3 py-1 rounded bg-red-500/20 hover:bg-red-500/30 text-red-400 transition-colors"
+                                >
+                                    ESC to exit
+                                </button>
+                            </div>
                         </div>
-                    ))}
 
-                    {/* Input Line */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-green-400">➜</span>
-                        <span className="text-cyan-400">~</span>
-                        <input
-                            type="text"
-                            value={terminalInput}
-                            onChange={(e) => setTerminalInput(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
-                            className={`flex-1 bg-transparent outline-none ${textColor} font-mono`}
-                            placeholder="type a command..."
-                            autoFocus
-                        />
+                        {/* Fullscreen Terminal Body */}
+                        <div className={`flex-1 p-6 font-mono text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} overflow-y-auto rounded-b-xl`}>
+                            {terminalHistory.map((item, i) => (
+                                <div key={i} className="mb-4">
+                                    {item.type === 'system' ? (
+                                        <div className="text-green-400 whitespace-pre-wrap">
+                                            {item.text}
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="flex items-start gap-2 mb-1">
+                                                <span className="text-green-400 shrink-0">➜</span>
+                                                <span className="text-cyan-400 shrink-0">~</span>
+                                                <span className={accentColor}>{item.text}</span>
+                                            </div>
+                                            {item.result && (
+                                                <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
+                                                    {item.result.type === 'error' ? (
+                                                        item.result.content
+                                                    ) : (
+                                                        renderOutput(item)
+                                                    )}
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+
+                            <div className="flex items-center gap-2">
+                                <span className="text-green-400">➜</span>
+                                <span className="text-cyan-400">~</span>
+                                <input
+                                    type="text"
+                                    value={terminalInput}
+                                    onChange={(e) => setTerminalInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
+                                    onKeyDown={handleKeyDown}
+                                    className={`flex-1 bg-transparent outline-none ${textColor} font-mono`}
+                                    placeholder="type a command..."
+                                    autoFocus
+                                />
+                            </div>
+                            <div ref={terminalEndRef} />
+                        </div>
                     </div>
-                    <div ref={terminalEndRef} />
                 </div>
-            </div>
+            )}
 
-            {/* Quick Commands */}
-            <div className="mt-4 flex flex-wrap gap-2 items-center">
-                <span className="text-sm opacity-60 hidden sm:inline">Quick commands:</span>
-                {Object.keys(commands).filter(cmd => cmd !== 'clear' && cmd !== 'whoami' && cmd !== 'date').map(cmd => (
+            {/* Normal Terminal Section */}
+            <section className="mb-20" ref={terminalContainerRef}>
+                <div className="flex items-center gap-3 mb-6">
+                    <Terminal className={accentColor} size={28} />
+                    <h2 className="text-3xl font-bold">Interactive Terminal</h2>
+                </div>
+                <div className={`${cardBg} border ${borderColor} rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
+                    {/* Terminal Header */}
+                    <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
+                        <div className="flex items-center gap-3">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-colors"></div>
+                                <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
+                                <div onClick={() => setIsFullscreen(true)} className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
+                            </div>
+                            <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
+                            <button
+                                onClick={() => setIsFullscreen(true)}
+                                className="text-xs font-mono px-2 py-1 rounded hover:bg-cyan-400/10 transition-colors opacity-60 hover:opacity-100"
+                                title="Toggle fullscreen"
+                            >
+                                [ ⛶ ]
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Terminal Body */}
+                    <div className={`p-4 sm:p-6 font-mono text-xs sm:text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
+                        {terminalHistory.map((item, i) => (
+                            <div key={i} className="mb-4">
+                                {item.type === 'system' ? (
+                                    <div className="text-green-400 whitespace-pre-wrap">
+                                        {item.text}
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className="flex items-start gap-2 mb-1">
+                                            <span className="text-green-400 shrink-0">➜</span>
+                                            <span className="text-cyan-400 shrink-0">~</span>
+                                            <span className={accentColor}>{item.text}</span>
+                                        </div>
+                                        {item.result && (
+                                            <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
+                                                {item.result.type === 'error' ? (
+                                                    item.result.content
+                                                ) : (
+                                                    renderOutput(item)
+                                                )}
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                        ))}
+
+                        <div className="flex items-center gap-2">
+                            <span className="text-green-400">➜</span>
+                            <span className="text-cyan-400">~</span>
+                            <input
+                                type="text"
+                                value={terminalInput}
+                                onChange={(e) => setTerminalInput(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
+                                onKeyDown={handleKeyDown}
+                                className={`flex-1 bg-transparent outline-none ${textColor} font-mono`}
+                                placeholder="type a command..."
+                                autoFocus
+                            />
+                        </div>
+                        <div ref={terminalEndRef} />
+                    </div>
+                </div>
+
+                {/* Quick Commands */}
+                <div className="mt-4 flex flex-wrap gap-2 items-center">
+                    <span className="text-sm opacity-60 hidden sm:inline">Quick commands:</span>
+                    {Object.keys(commands).filter(cmd => cmd !== 'clear' && cmd !== 'whoami' && cmd !== 'date').map(cmd => (
+                        <button
+                            key={cmd}
+                            onClick={(e) => {
+                                setTerminalInput(cmd);
+                                handleTerminalSubmit(e, cmd);
+                            }}
+                            className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-xs font-mono hover:scale-105`}
+                        >
+                            $ {cmd}
+                        </button>
+                    ))}
                     <button
-                        key={cmd}
-                        onClick={(e) => {
-                            setTerminalInput(cmd);
-                            handleTerminalSubmit(e, cmd);
-                        }}
+                        onClick={() => setIsFullscreen(true)}
                         className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-xs font-mono hover:scale-105`}
                     >
-                        $ {cmd}
+                        ⛶ fullscreen
                     </button>
-                ))}
-            </div>
-        </section>
+                </div>
+            </section>
+        </>
     )
 }
 
