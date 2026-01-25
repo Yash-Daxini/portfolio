@@ -25,14 +25,9 @@ interface TerminalSectionProps {
 
 const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, textColor, isDark, setIsDark, downloadResume }: TerminalSectionProps) => {
 
-    const [lastLoggedInDate, setLastLoggedInDate] = useState<Date>(new Date());
+    const [lastLoggedInDate, setLastLoggedInDate] = useState<string>("");
     const [terminalInput, setTerminalInput] = useState('');
-    const [terminalHistory, setTerminalHistory] = useState<TerminalData[]>([
-        {
-            type: 'system',
-            text: `Last login: ${lastLoggedInDate.toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n`
-        }
-    ]);
+    const [terminalHistory, setTerminalHistory] = useState<TerminalData[]>([]);
     const terminalEndRef = useRef<any>(null);
     const terminalContainerRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +39,15 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                 inline: 'nearest'
             });
         }
-        setLastLoggedInDate(new Date());
+
+        setLastLoggedInDate(new Date().toLocaleString());
+
+        if (terminalHistory.length == 0) {
+            setTerminalHistory([{
+                type: 'system',
+                text: `Last login: ${new Date().toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n`
+            }]);
+        }
     }, [terminalHistory]);
 
     const commands = {
@@ -202,7 +205,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         const newEntry: any = {
             type: 'input',
             text: terminalInputText,
-            timestamp: new Date().toLocaleTimeString()
+            timestamp: new Date().toLocaleString()
         };
 
         if (cmd === 'clear') {
