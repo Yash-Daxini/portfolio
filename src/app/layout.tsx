@@ -76,6 +76,7 @@ export const metadata: Metadata = {
         width: 1200,
         height: 630,
         alt: 'Yash Daxini Portfolio',
+        type: 'image/png'
       },
     ],
     locale: 'en_US',
