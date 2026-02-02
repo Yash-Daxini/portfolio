@@ -282,9 +282,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                         <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor} rounded-t-xl`}>
                             <div className="flex items-center gap-3">
                                 <div className="flex gap-2">
-                                    <div onClick={() => setIsFullscreen(false)} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-colors"></div>
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
-                                    <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
+                                    <div onClick={() => setIsFullscreen(false)} className={`w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 ${isFullscreen && 'cursor-pointer'} transition-colors`}></div>
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></div>
+                                    <div className={`w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 ${!isFullscreen && 'cursor-pointer'} transition-colors`}></div>
                                 </div>
                                 <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio [FULLSCREEN]</span>
                             </div>
@@ -359,9 +359,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                     <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
                         <div className="flex items-center gap-3">
                             <div className="flex gap-2">
-                                <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-colors"></div>
-                                <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-colors"></div>
-                                <div onClick={() => setIsFullscreen(true)} className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-colors"></div>
+                                <div className={`w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 ${isFullscreen && 'cursor-pointer'} transition-colors`}></div>
+                                <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></div>
+                                <div onClick={() => setIsFullscreen(true)} className={`w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 ${!isFullscreen && 'cursor-pointer'} transition-colors`}></div>
                             </div>
                             <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
                         </div>
