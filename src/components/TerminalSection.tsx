@@ -49,7 +49,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
         if (terminalHistory.length == 0) {
             setTerminalHistory([{
                 type: 'system',
-                text: `Last login: ${new Date().toLocaleString()} on ttys001\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n`
+                text: `Last login: ${new Date().toLocaleString()} on tty\n\nWelcome to Portfolio Terminal v1.0\nType 'help' to see available commands.\n`
             }]);
         }
     }, [terminalHistory]);
