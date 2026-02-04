@@ -138,10 +138,10 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
                             </a>
                         </div>
                     </div>
-                    <div className={`border-t ${borderColor} pt-6`}>
+                    {/* <div className={`border-t ${borderColor} pt-6`}>
                         <h3 className="font-mono font-bold mb-3">Location</h3>
                         <p className="opacity-80">Available for remote opportunities worldwide</p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </section>
