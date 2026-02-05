@@ -1,4 +1,4 @@
-import { Code, Database, Monitor, Server } from 'lucide-react';
+import { Code, Database, FrameIcon, Monitor, Server } from 'lucide-react';
 
 interface Project {
     title: string,
@@ -76,6 +76,10 @@ export const SKILLS = {
     databases: {
         icon: <Database size={20} />,
         items: ['Microsoft SQL Server', 'MySQL', 'MongoDB', 'Redis', 'PostgreSQL']
+    },
+    frameWorks:{
+        icon: <FrameIcon size={20} />,
+        items: ['React', 'Angular', 'Node JS', '.NET']
     }
 };
 
