@@ -67,7 +67,7 @@ export const SKILLS = {
     },
     linux: {
         icon: <Monitor size={20} />,
-        items: ['Arch Linux', 'Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting']
+        items: ['Arch Linux', 'Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting', 'TeamCity']
     },
     languages: {
         icon: <Code size={20} />,
