@@ -23,7 +23,7 @@ export const PROJECTS: Project[] = [
     {
         title: 'Online Ordering Web Platform',
         description: 'Built responsive and accessible user interfaces for an online ordering system, enhancing customer experience through intuitive design and optimized frontend performance.',
-        tech: ['Angular', 'Typescript', '.NET', 'Mongo DB']
+        tech: ['Angular', 'Typescript', '.NET', 'Mongo DB', 'Android APKs', 'IOS builds']
     },
     {
         title: 'Algorithmic Trading Platform',
@@ -63,11 +63,11 @@ export const PROJECTS: Project[] = [
 export const SKILLS = {
     devops: {
         icon: <Server size={20} />,
-        items: ['CI/CD Concepts', 'TeamCity (Build & Deployment Pipelines)', 'Docker', 'Deployment Automation']
+        items: ['CI/CD Concepts', 'TeamCity (Build & Deployment Pipelines)', 'Docker', 'Deployment Automation', 'IIS']
     },
     linux: {
         icon: <Monitor size={20} />,
-        items: ['Arch Linux', 'Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting', 'TeamCity']
+        items: ['Arch Linux', 'Ubuntu', 'Linux Fundamentals', 'Shell Basics', 'System Configuration & Troubleshooting']
     },
     languages: {
         icon: <Code size={20} />,
