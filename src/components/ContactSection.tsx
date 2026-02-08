@@ -16,6 +16,43 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
     const [emailForm, setEmailForm] = useState({ name: '', email: '', message: '' });
     const [emailStatus, setEmailStatus] = useState('');
 
+    const animationStyles = `
+        @keyframes input-focus-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+            50% { box-shadow: 0 0 20px 0 rgba(34, 211, 238, 0.3); }
+        }
+
+        @keyframes button-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes contact-icon-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .input-glow:focus {
+            animation: input-focus-glow 2s ease-in-out infinite;
+        }
+
+        .contact-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .contact-card-hover:hover {
+            transform: translateY(-8px);
+        }
+
+        .send-button-active {
+            animation: button-pulse 1s ease-in-out infinite;
+        }
+
+        .contact-icon-wrapper:hover .contact-icon {
+            animation: contact-icon-bounce 0.6s ease-in-out;
+        }
+    `;
+
     const handleEmailSubmit = async () => {
         if (!emailForm.name || !emailForm.email || !emailForm.message) return;
 
@@ -50,97 +87,100 @@ const ContactSection: React.FC<ContactSectionProps> = ({ cardBg, accentBg, accen
     };
 
     return (
-        <section id="contact" className="mb-20">
-            <div className="flex items-center gap-3 mb-6">
-                <MessageSquare className={accentColor} size={28} />
-                <h2 className="text-3xl font-bold">Get in Touch</h2>
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                <div className={`lg:col-span-3 ${cardBg} border ${borderColor} rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500`}>
-                    <h3 className="font-bold text-xl mb-6">Send a Message</h3>
-                    <div className="space-y-5">
-                        <div>
-                            <label className="block mb-2 font-medium text-sm opacity-80">Name</label>
-                            <input
-                                type="text"
-                                value={emailForm.name}
-                                onChange={(e) => setEmailForm({ ...emailForm, name: e.target.value })}
-                                className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300`}
-                                placeholder="Your name"
-                            />
-                        </div>
-                        <div>
-                            <label className="block mb-2 font-medium text-sm opacity-80">Email</label>
-                            <input
-                                type="email"
-                                value={emailForm.email}
-                                onChange={(e) => setEmailForm({ ...emailForm, email: e.target.value })}
-                                className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300`}
-                                placeholder="your.email@example.com"
-                            />
-                        </div>
-                        <div>
-                            <label className="block mb-2 font-medium text-sm opacity-80">Message</label>
-                            <textarea
-                                value={emailForm.message}
-                                onChange={(e) => setEmailForm({ ...emailForm, message: e.target.value })}
-                                className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300 h-40 resize-none`}
-                                placeholder="Your message here..."
-                            />
-                        </div>
-                        <button
-                            onClick={handleEmailSubmit}
-                            disabled={emailStatus === 'sending'}
-                            className={`w-full ${accentBg} text-white py-4 rounded-lg transition-all duration-300 disabled:opacity-50 font-medium hover:opacity-90 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2`}
-                        >
-                            {emailStatus === 'sending' && '⟳ Sending...'}
-                            {emailStatus === 'success' && '✓ Message Sent!'}
-                            {!emailStatus && (
-                                <>
-                                    <Mail size={20} />
-                                    Send Message
-                                </>
-                            )}
-                        </button>
-                    </div>
+        <>
+            <style>{animationStyles}</style>
+            <section id="contact" className="mb-20">
+                <div className="flex items-center gap-3 mb-6">
+                    <MessageSquare className={accentColor} size={28} />
+                    <h2 className="text-3xl font-bold">Get in Touch</h2>
                 </div>
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                    <div className={`lg:col-span-3 ${cardBg} border ${borderColor} rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500`}>
+                        <h3 className="font-bold text-xl mb-6">Send a Message</h3>
+                        <div className="space-y-5">
+                            <div>
+                                <label className="block mb-2 font-medium text-sm opacity-80">Name</label>
+                                <input
+                                    type="text"
+                                    value={emailForm.name}
+                                    onChange={(e) => setEmailForm({ ...emailForm, name: e.target.value })}
+                                    className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300`}
+                                    placeholder="Your name"
+                                />
+                            </div>
+                            <div>
+                                <label className="block mb-2 font-medium text-sm opacity-80">Email</label>
+                                <input
+                                    type="email"
+                                    value={emailForm.email}
+                                    onChange={(e) => setEmailForm({ ...emailForm, email: e.target.value })}
+                                    className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300`}
+                                    placeholder="your.email@example.com"
+                                />
+                            </div>
+                            <div>
+                                <label className="block mb-2 font-medium text-sm opacity-80">Message</label>
+                                <textarea
+                                    value={emailForm.message}
+                                    onChange={(e) => setEmailForm({ ...emailForm, message: e.target.value })}
+                                    className={`w-full p-4 border ${borderColor} rounded-lg ${isDark ? 'bg-gray-700' : 'bg-white'} outline-none focus:border-cyan-400 transition-all duration-300 h-40 resize-none`}
+                                    placeholder="Your message here..."
+                                />
+                            </div>
+                            <button
+                                onClick={handleEmailSubmit}
+                                disabled={emailStatus === 'sending'}
+                                className={`w-full ${accentBg} text-white py-4 rounded-lg transition-all duration-300 disabled:opacity-50 font-medium hover:opacity-90 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2`}
+                            >
+                                {emailStatus === 'sending' && '⟳ Sending...'}
+                                {emailStatus === 'success' && '✓ Message Sent!'}
+                                {!emailStatus && (
+                                    <>
+                                        <Mail size={20} />
+                                        Send Message
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
 
-                <div className="lg:col-span-2 space-y-6">
-                    <div className={`${cardBg} border ${borderColor} rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500`}>
-                        <h3 className="font-bold mb-4">Direct Contact</h3>
-                        <div className="space-y-4">
-                            <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                                <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
-                                    <Mail size={20} className="group-hover:text-white" />
-                                </div>
-                                <div>
-                                    <div className="text-xs opacity-60">Email</div>
-                                    <div className="font-medium">{EMAIL}</div>
-                                </div>
-                            </a>
-                            <a href={GITHUB} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                                <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
-                                    <Github size={20} className="group-hover:text-white" />
-                                </div>
-                                <div>
-                                    <div className="text-xs opacity-60">GitHub</div>
-                                    <div className="font-medium">{GITHUB_USERNAME}</div>
-                                </div>
-                            </a>
-                            <a href={LINKEDIN} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
-                                <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
-                                    <Linkedin size={20} className="group-hover:text-white" />
-                                </div>
-                                <div>
-                                    <div className="text-xs opacity-60">LinkedIn</div>
-                                    <div className="font-medium">{LINKEDIN_USERNAME}</div>
-                                </div>
-                            </a>
+                    <div className="lg:col-span-2 space-y-6">
+                        <div className={`${cardBg} border ${borderColor} rounded-xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500`}>
+                            <h3 className="font-bold mb-4">Direct Contact</h3>
+                            <div className="space-y-4">
+                                <a href={`mailto:${EMAIL}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
+                                        <Mail size={20} className="group-hover:text-white" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xs opacity-60">Email</div>
+                                        <div className="font-medium">{EMAIL}</div>
+                                    </div>
+                                </a>
+                                <a href={GITHUB} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
+                                        <Github size={20} className="group-hover:text-white" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xs opacity-60">GitHub</div>
+                                        <div className="font-medium">{GITHUB_USERNAME}</div>
+                                    </div>
+                                </a>
+                                <a href={LINKEDIN} target="_blank" className="flex items-center gap-3 hover:opacity-80 transition-opacity group">
+                                    <div className={`p-2 rounded-lg ${isDark ? 'bg-gray-700' : 'bg-gray-200'} group-hover:bg-cyan-400 transition-colors`}>
+                                        <Linkedin size={20} className="group-hover:text-white" />
+                                    </div>
+                                    <div>
+                                        <div className="text-xs opacity-60">LinkedIn</div>
+                                        <div className="font-medium">{LINKEDIN_USERNAME}</div>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     )
 }
 

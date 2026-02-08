@@ -33,6 +33,9 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [commandHistory, setCommandHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [isHoveringTerminal, setIsHoveringTerminal] = useState(false);
+
 
 
     useEffect(() => {
@@ -53,6 +56,15 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
             }]);
         }
     }, [terminalHistory]);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
+
 
     const commands = {
         help: () => ({
@@ -274,35 +286,49 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
 
     return (
         <>
-            {/* Fullscreen Overlay */}
+            {/* Cursor Glow Effect */}
+            <div
+                className="cursor-glow"
+                style={{
+                    left: `${mousePosition.x}px`,
+                    top: `${mousePosition.y}px`,
+                    opacity: isHoveringTerminal ? 1 : 0
+                }}
+            />
+
+            {/* Fullscreen Overlay - Enhanced */}
             {isFullscreen && (
-                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm animate-fade-in" ref={terminalContainerRef}>
+                <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm animate-fade-in">
                     <div className="h-full flex flex-col p-4">
-                        {/* Fullscreen Terminal Header */}
-                        <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor} rounded-t-xl`}>
-                            <div className="flex items-center gap-3">
-                                <div className="flex gap-2">
-                                    <div onClick={() => setIsFullscreen(false)} className={`w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 ${isFullscreen && 'cursor-pointer'} transition-colors`}></div>
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></div>
-                                    <div className={`w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 ${!isFullscreen && 'cursor-pointer'} transition-colors`}></div>
+                        {/* Enhanced Fullscreen Terminal Header with Gradient Border */}
+                        <div className="relative">
+                            <div className="absolute inset-0 gradient-border rounded-t-xl opacity-50"></div>
+                            <div className={`relative ${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor} rounded-t-xl`}>
+                                <div className="flex items-center gap-3">
+                                    <div className="flex gap-2">
+                                        <div onClick={() => setIsFullscreen(false)} className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-all hover:scale-125 hover:shadow-lg hover:shadow-red-500/50"></div>
+                                        <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-all hover:scale-125 hover:shadow-lg hover:shadow-yellow-500/50"></div>
+                                        <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-all hover:scale-125 hover:shadow-lg hover:shadow-green-500/50 animate-pulse-glow"></div>
+                                    </div>
+                                    <span className="font-mono text-sm ml-2 opacity-70 animate-float">zsh - portfolio [FULLSCREEN]</span>
                                 </div>
-                                <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio [FULLSCREEN]</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
-                                <button
-                                    onClick={() => setIsFullscreen(false)}
-                                    className="text-xs font-mono px-3 py-1 rounded bg-red-500/20 hover:bg-red-500/30 text-red-400 transition-colors"
-                                >
-                                    ESC to exit
-                                </button>
+                                <div className="flex items-center gap-4">
+                                    <div className="text-xs opacity-60 font-mono hidden sm:block text-gradient">yash@portfolio:~$</div>
+                                    <button
+                                        onClick={() => setIsFullscreen(false)}
+                                        className="text-xs font-mono px-3 py-1 rounded bg-red-500/20 hover:bg-red-500/30 text-red-400 transition-all hover:scale-110 hover:shadow-lg"
+                                    >
+                                        ESC to exit
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Fullscreen Terminal Body */}
-                        <div className={`flex-1 p-6 font-mono text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} overflow-y-auto rounded-b-xl`}>
+                        {/* Fullscreen Terminal Body with Scanline Effect */}
+                        <div className={`relative flex-1 p-6 font-mono text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} overflow-y-auto rounded-b-xl`}>
+                            <div className="terminal-scanline"></div>
                             {terminalHistory.map((item, i) => (
-                                <div key={i} className="mb-4">
+                                <div key={i} className="mb-4 animate-slide-up" style={{ animationDelay: `${i * 0.05}s` }}>
                                     {item.type === 'system' ? (
                                         <div className="text-green-400 whitespace-pre-wrap">
                                             {item.text}
@@ -310,7 +336,7 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                                     ) : (
                                         <>
                                             <div className="flex items-start gap-2 mb-1">
-                                                <span className="text-green-400 shrink-0">➜</span>
+                                                <span className="text-green-400 shrink-0 animate-pulse-glow">➜</span>
                                                 <span className="text-cyan-400 shrink-0">~</span>
                                                 <span className={accentColor}>{item.text}</span>
                                             </div>
@@ -329,7 +355,98 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                             ))}
 
                             <div className="flex items-center gap-2">
-                                <span className="text-green-400">➜</span>
+                                <span className="text-green-400 animate-pulse-glow">➜</span>
+                                <span className="text-cyan-400">~</span>
+                                <input
+                                    type="text"
+                                    value={terminalInput}
+                                    onChange={(e) => setTerminalInput(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
+                                    onKeyDown={handleKeyDown}
+                                    className={`flex-1 bg-transparent outline-none ${textColor} font-mono typing-indicator`}
+                                    placeholder="type a command..."
+                                    autoFocus
+                                />
+                            </div>
+                            <div ref={terminalEndRef} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Normal Terminal Section - Enhanced */}
+            <section className="mb-20 animate-slide-up">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="animate-float">
+                        <Terminal className={`${accentColor} animate-glow`} size={28} />
+                    </div>
+                    <h2 className="text-3xl font-bold text-gradient">Interactive Terminal</h2>
+                </div>
+
+                <div
+                    className={`relative ${cardBg} border ${borderColor} rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 card-hover-effect animate-glow`}
+                    onMouseEnter={() => setIsHoveringTerminal(true)}
+                    onMouseLeave={() => setIsHoveringTerminal(false)}
+                >
+                    {/* Animated Border Gradient */}
+                    <div className="absolute inset-0 gradient-border opacity-0 hover:opacity-30 transition-opacity duration-500 pointer-events-none rounded-xl"></div>
+
+                    {/* Terminal Header - Enhanced */}
+                    <div className={`relative ${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
+                        <div className="animate-shimmer absolute inset-0"></div>
+                        <div className="relative flex items-center gap-3">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 cursor-pointer transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-red-500/50"></div>
+                                <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 cursor-pointer transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-yellow-500/50"></div>
+                                <div onClick={() => setIsFullscreen(true)} className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 cursor-pointer transition-all duration-300 hover:scale-125 hover:shadow-lg hover:shadow-green-500/50 animate-pulse-glow"></div>
+                            </div>
+                            <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
+                        </div>
+                        <div className="relative flex items-center gap-3">
+                            <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
+                            <button
+                                onClick={() => setIsFullscreen(true)}
+                                className="text-xs font-mono px-2 py-1 rounded hover:bg-cyan-400/10 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
+                                title="Toggle fullscreen"
+                            >
+                                [ ⛶ ]
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Terminal Body - Enhanced with Scanline */}
+                    <div className="relative">
+                        <div className="terminal-scanline"></div>
+                        <div ref={terminalContainerRef} className={`p-4 sm:p-6 font-mono text-xs sm:text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
+                            {terminalHistory.map((item, i) => (
+                                <div key={i} className="mb-4 animate-slide-up" style={{ animationDelay: `${i * 0.05}s` }}>
+                                    {item.type === 'system' ? (
+                                        <div className="text-green-400 whitespace-pre-wrap">
+                                            {item.text}
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="flex items-start gap-2 mb-1">
+                                                <span className="text-green-400 shrink-0 animate-pulse-glow">➜</span>
+                                                <span className="text-cyan-400 shrink-0">~</span>
+                                                <span className={accentColor}>{item.text}</span>
+                                            </div>
+                                            {item.result && (
+                                                <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
+                                                    {item.result.type === 'error' ? (
+                                                        item.result.content
+                                                    ) : (
+                                                        renderOutput(item)
+                                                    )}
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+
+                            <div className="flex items-center gap-2">
+                                <span className="text-green-400 animate-pulse-glow">➜</span>
                                 <span className="text-cyan-400">~</span>
                                 <input
                                     type="text"
@@ -346,109 +463,33 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({ cardBg, accentBg, acc
                         </div>
                     </div>
                 </div>
-            )}
 
-            {/* Normal Terminal Section */}
-            <section className="mb-20" ref={terminalContainerRef}>
-                <div className="flex items-center gap-3 mb-6">
-                    <Terminal className={accentColor} size={28} />
-                    <h2 className="text-3xl font-bold">Interactive Terminal</h2>
-                </div>
-                <div className={`${cardBg} border ${borderColor} rounded-xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500`}>
-                    {/* Terminal Header */}
-                    <div className={`${isDark ? 'bg-gray-700' : 'bg-gray-200'} px-4 py-3 flex items-center justify-between border-b ${borderColor}`}>
-                        <div className="flex items-center gap-3">
-                            <div className="flex gap-2">
-                                <div className={`w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 ${isFullscreen && 'cursor-pointer'} transition-colors`}></div>
-                                <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></div>
-                                <div onClick={() => setIsFullscreen(true)} className={`w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 ${!isFullscreen && 'cursor-pointer'} transition-colors`}></div>
-                            </div>
-                            <span className="font-mono text-sm ml-2 opacity-70">zsh - portfolio</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="text-xs opacity-60 font-mono hidden sm:block">yash@portfolio:~$</div>
-                            <button
-                                onClick={() => setIsFullscreen(true)}
-                                className="text-xs font-mono px-2 py-1 rounded hover:bg-cyan-400/10 transition-colors opacity-60 hover:opacity-100"
-                                title="Toggle fullscreen"
-                            >
-                                [ ⛶ ]
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Terminal Body */}
-                    <div className={`p-4 sm:p-6 font-mono text-xs sm:text-sm ${isDark ? 'bg-gray-900' : 'bg-gray-50'} min-h-80 max-h-96 overflow-y-auto`}>
-                        {terminalHistory.map((item, i) => (
-                            <div key={i} className="mb-4">
-                                {item.type === 'system' ? (
-                                    <div className="text-green-400 whitespace-pre-wrap">
-                                        {item.text}
-                                    </div>
-                                ) : (
-                                    <>
-                                        <div className="flex items-start gap-2 mb-1">
-                                            <span className="text-green-400 shrink-0">➜</span>
-                                            <span className="text-cyan-400 shrink-0">~</span>
-                                            <span className={accentColor}>{item.text}</span>
-                                        </div>
-                                        {item.result && (
-                                            <div className={item.result.type === 'error' ? 'text-red-400' : ''}>
-                                                {item.result.type === 'error' ? (
-                                                    item.result.content
-                                                ) : (
-                                                    renderOutput(item)
-                                                )}
-                                            </div>
-                                        )}
-                                    </>
-                                )}
-                            </div>
-                        ))}
-
-                        <div className="flex items-center gap-2">
-                            <span className="text-green-400">➜</span>
-                            <span className="text-cyan-400">~</span>
-                            <input
-                                type="text"
-                                value={terminalInput}
-                                onChange={(e) => setTerminalInput(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && handleTerminalSubmit(e)}
-                                onKeyDown={handleKeyDown}
-                                className={`flex-1 bg-transparent outline-none ${textColor} font-mono`}
-                                placeholder="type a command..."
-                                autoFocus
-                            />
-                        </div>
-                        <div ref={terminalEndRef} />
-                    </div>
-                </div>
-
-                {/* Quick Commands */}
+                {/* Quick Commands - Enhanced */}
                 <div className="mt-4 flex flex-wrap gap-2 items-center">
-                    <span className="text-sm opacity-60 hidden sm:inline">Quick commands:</span>
-                    {Object.keys(commands).filter(cmd => cmd !== 'clear' && cmd !== 'whoami' && cmd !== 'date').map(cmd => (
+                    <span className="text-sm opacity-60 hidden sm:inline animate-float">Quick commands:</span>
+                    {Object.keys(commands).filter(cmd => cmd !== 'clear' && cmd !== 'whoami' && cmd !== 'date').map((cmd, index) => (
                         <button
                             key={cmd}
                             onClick={(e) => {
                                 setTerminalInput(cmd);
                                 handleTerminalSubmit(e, cmd);
                             }}
-                            className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-xs font-mono hover:scale-105`}
+                            className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all duration-300 text-xs font-mono hover:scale-110 hover:shadow-lg hover:shadow-cyan-400/20 animate-slide-up`}
+                            style={{ animationDelay: `${index * 0.1}s` }}
                         >
                             $ {cmd}
                         </button>
                     ))}
                     <button
                         onClick={() => setIsFullscreen(true)}
-                        className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all text-xs font-mono hover:scale-105`}
+                        className={`px-3 py-1.5 rounded-lg border ${borderColor} hover:border-cyan-400 hover:bg-cyan-400/10 transition-all duration-300 text-xs font-mono hover:scale-110 hover:shadow-lg hover:shadow-cyan-400/20 animate-glow`}
                     >
                         ⛶ fullscreen
                     </button>
                 </div>
             </section>
         </>
-    )
+    );
 }
 
 export default TerminalSection
