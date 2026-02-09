@@ -138,12 +138,6 @@ const Projects: React.FC<ProjectsProps> = ({ cardBg, accentColor, borderColor }:
                             onMouseEnter={() => setHoveredProject(index)}
                             onMouseLeave={() => setHoveredProject(null)}
                         >
-                            {/* Project Visual Indicator */}
-                            <div className="project-image-placeholder h-32 rounded-lg mb-4 flex items-center justify-center">
-                                <div className={`text-6xl opacity-20 transition-all duration-500 ${hoveredProject === index ? 'scale-125 opacity-30' : ''}`}>
-                                    💻
-                                </div>
-                            </div>
 
                             <div className="mb-4">
                                 <h3 className="font-bold text-xl mb-2 transition-colors project-title-animated">
