@@ -1,19 +1,17 @@
-import React from 'react'
+import React from "react";
 
 interface FooterProps {
-    borderColor: string
+  borderColor: string;
 }
 
 const Footer: React.FC<FooterProps> = ({ borderColor }: FooterProps) => {
-    return (
-        <footer className={`border-t ${borderColor} py-8`}>
-            <div className="container mx-auto px-4 text-center">
-                <p className="font-mono text-sm opacity-70">
-                    © 2026 | Yash Daxini
-                </p>
-            </div>
-        </footer>
-    )
-}
+  return (
+    <footer className={`border-t ${borderColor} py-8`}>
+      <div className="container mx-auto px-4 text-center">
+        <p className="font-mono text-sm opacity-70">© 2026 | Yash Daxini</p>
+      </div>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

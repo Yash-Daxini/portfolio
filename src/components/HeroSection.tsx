@@ -1,349 +1,213 @@
-import { ABOUT, EMAIL, GITHUB, LINKEDIN, PROJECTS } from '@/shared/config'
-import { Cpu, Download, Github, Linkedin, Mail, Moon, Sun } from 'lucide-react'
-import React, { useRef, useState, useEffect } from 'react'
+import { ABOUT, EMAIL, GITHUB, LINKEDIN, PROJECTS } from "@/shared/config";
+import { Cpu, Download, Github, Linkedin, Mail, Moon, Sun } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 interface HeroSectionProps {
-    cardBg: string
-    accentBg: string
-    accentColor: string
-    borderColor: string
-    isDark: boolean
-    downloadResume: (theme?: 'dark' | 'light') => void
-    resumeMenuRef: any
-    showResumeMenu: boolean
-    setShowResumeMenu: (showResumeMenu: boolean) => void
+  cardBg: string;
+  accentBg: string;
+  accentColor: string;
+  borderColor: string;
+  isDark: boolean;
+  downloadResume: (theme?: "dark" | "light") => void;
+  resumeMenuRef: any;
+  showResumeMenu: boolean;
+  setShowResumeMenu: (showResumeMenu: boolean) => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ cardBg, accentBg, accentColor, borderColor, isDark, downloadResume, resumeMenuRef, showResumeMenu, setShowResumeMenu }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({
+  cardBg,
+  accentBg,
+  accentColor,
+  borderColor,
+  isDark,
+  downloadResume,
+  resumeMenuRef,
+  showResumeMenu,
+  setShowResumeMenu,
+}) => {
+  const heroRef = useRef(null);
 
-    const heroRef = useRef(null);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [isHoveringHero, setIsHoveringHero] = useState(false);
+  // Define variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (heroRef.current) {
-                const rect = (heroRef.current as HTMLElement).getBoundingClientRect();
-                setMousePosition({
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top
-                });
-            }
-        };
+  const itemVariants: any = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+  };
 
-        const heroElement = heroRef.current as HTMLElement | null;
-        if (heroElement) {
-            heroElement.addEventListener('mousemove', handleMouseMove as any);
-        }
+  return (
+    <>
+      <section ref={heroRef} id="about" className="mb-20 pt-10 relative">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className={`border ${borderColor} rounded-xl p-8 lg:p-12 ${cardBg} shadow-xl hover:shadow-cyan-500/10 transition-shadow duration-500`}
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-14 relative z-10 items-center">
 
-        return () => {
-            if (heroElement) {
-                heroElement.removeEventListener('mousemove', handleMouseMove as any);
-            }
-        };
-    }, []);
+            {/* Left Content */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="lg:col-span-2"
+            >
+              <div className="mb-8">
+                <motion.div variants={itemVariants} className="mb-3 font-mono text-sm opacity-70 border-b border-gray-500/30 pb-2 w-fit">
+                  <span className={accentColor}>{"<"}</span>
+                  <span className="text-gray-400">System.init </span>
+                  <span className={accentColor}>{"/>"}</span>
+                </motion.div>
+                <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight">
+                  Hello, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400 font-mono">Yash Daxini</span>
+                  <span className={`inline-block w-3 h-10 ml-2 animate-pulse ${accentBg} align-middle`}></span>
+                </motion.h1>
+                <motion.h2 variants={itemVariants} className="text-xl md:text-2xl mb-6 opacity-80 font-medium">
+                  Software Engineer & Full-Stack Developer
+                </motion.h2>
+                <motion.p variants={itemVariants} className="text-lg opacity-70 leading-relaxed max-w-2xl text-shadow-sm">
+                  {ABOUT}
+                </motion.p>
+              </div>
 
-    return (
-        <>
-            <style>{`
-                @keyframes hero-glow {
-                    0%, 100% { box-shadow: 0 20px 60px rgba(34, 211, 238, 0.2); }
-                    50% { box-shadow: 0 20px 80px rgba(34, 211, 238, 0.4); }
-                }
+              <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mt-8 font-mono text-sm">
+                <div className="relative" ref={resumeMenuRef}>
+                  <button
+                    onClick={() => setShowResumeMenu(!showResumeMenu)}
+                    className={`${accentBg} px-6 py-3 rounded-lg flex items-center justify-center gap-2 cursor-pointer transition-transform duration-300 hover:scale-105 shadow-lg shadow-cyan-500/20`}
+                  >
+                    <Download size={18} />
+                    <span>Download_Resume</span>
+                  </button>
 
-                @keyframes text-shimmer {
-                    0% { background-position: -200% center; }
-                    100% { background-position: 200% center; }
-                }
-
-                @keyframes stat-count {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                @keyframes progress-fill {
-                    from { width: 0; }
-                }
-
-                @keyframes social-pop {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.2) rotate(5deg); }
-                    100% { transform: scale(1); }
-                }
-
-                @keyframes resume-menu-slide {
-                    from { 
-                        opacity: 0;
-                        transform: translateY(-10px);
-                    }
-                    to { 
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                @keyframes typing-blink {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0; }
-                }
-
-                .hero-card {
-                    position: relative;
-                    overflow: hidden;
-                }
-
-                .hero-card::before {
-                    content: '';
-                    position: absolute;
-                    top: -50%;
-                    left: -50%;
-                    width: 200%;
-                    height: 200%;
-                    background: radial-gradient(circle, rgba(34, 211, 238, 0.1) 0%, transparent 70%);
-                    opacity: 0;
-                    transition: opacity 0.5s;
-                    pointer-events: none;
-                }
-
-                .hero-card:hover::before {
-                    opacity: 1;
-                }
-
-                .hero-spotlight {
-                    position: absolute;
-                    width: 300px;
-                    height: 300px;
-                    border-radius: 50%;
-                    background: radial-gradient(circle, rgba(34, 211, 238, 0.15), transparent 70%);
-                    pointer-events: none;
-                    transition: opacity 0.3s;
-                }
-
-                .text-gradient-animated {
-                    background: linear-gradient(90deg, #22d3ee, #3b82f6, #8b5cf6, #22d3ee);
-                    background-size: 300% auto;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                    animation: text-shimmer 8s linear infinite;
-                }
-
-                .button-glow-hover {
-                    position: relative;
-                    overflow: hidden;
-                }
-
-                .button-glow-hover::before {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 0;
-                    height: 0;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.3);
-                    transform: translate(-50%, -50%);
-                    transition: width 0.6s, height 0.6s;
-                }
-
-                .button-glow-hover:hover::before {
-                    width: 300px;
-                    height: 300px;
-                }
-
-                .status-badge {
-                    animation: stat-count 0.6s ease-out;
-                }
-
-                .progress-bar-fill {
-                    animation: progress-fill 1.5s ease-out;
-                }
-
-                .social-icon {
-                    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-                }
-
-                .social-icon:hover {
-                    animation: social-pop 0.6s ease-in-out;
-                }
-
-                .resume-dropdown {
-                    animation: resume-menu-slide 0.3s ease-out;
-                }
-
-                .typing-cursor::after {
-                    content: '|';
-                    animation: typing-blink 1s infinite;
-                }
-
-                .stat-value {
-                    transition: all 0.3s;
-                }
-
-                .stat-card:hover .stat-value {
-                    transform: scale(1.1);
-                    color: #22d3ee;
-                }
-            `}</style>
-
-            <section ref={heroRef} id="about" className="mb-20 pt-10 relative">
-                {/* Hero Spotlight Effect */}
-                {isHoveringHero && (
-                    <div
-                        className="hero-spotlight"
-                        style={{
-                            left: `${mousePosition.x}px`,
-                            top: `${mousePosition.y}px`,
-                            transform: 'translate(-50%, -50%)'
-                        }}
-                    />
-                )}
-
-                <div
-                    className={`hero-card ${cardBg} border ${borderColor} rounded-2xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-500 animate-fade-in`}
-                    onMouseEnter={() => setIsHoveringHero(true)}
-                    onMouseLeave={() => setIsHoveringHero(false)}
-                    style={{ animation: 'hero-glow 3s ease-in-out infinite' }}
-                >
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <div className="lg:col-span-2">
-                            <div className="mb-6">
-                                <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gradient-animated">
-                                    Hello, I'm Yash Daxini
-                                </h1>
-                                <h2 className="text-2xl md:text-3xl mb-6 opacity-90 typing-cursor">
-                                    Software Engineer | Full-Stack Developer
-                                </h2>
-                                <p className="text-lg opacity-80 leading-relaxed mb-8">
-                                    {ABOUT}
-                                </p>
-                            </div>
-                            <div className="flex flex-wrap gap-4">
-                                <div className="relative" ref={resumeMenuRef}>
-                                    <button
-                                        onClick={() => setShowResumeMenu(!showResumeMenu)}
-                                        className={`${accentBg} text-white px-8 py-3 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer button-glow-hover relative overflow-hidden`}
-                                    >
-                                        <Download size={20} className="relative z-10" />
-                                        <span className="relative z-10">Download Resume</span>
-                                    </button>
-
-                                    {showResumeMenu && (
-                                        <div className={`absolute top-full mt-2 ${cardBg} border ${borderColor} rounded-lg shadow-2xl p-2 min-w-[200px] z-10 resume-dropdown`}>
-                                            <button
-                                                onClick={() => downloadResume('dark')}
-                                                className={`w-full text-left px-4 py-3 rounded-lg hover:${isDark ? 'bg-gray-700' : 'bg-gray-100'} transition-all duration-300 flex items-center gap-3 cursor-pointer hover:scale-105`}
-                                            >
-                                                <Moon size={18} className="text-purple-400 animate-pulse" />
-                                                <div>
-                                                    <div className="font-medium">Dark Theme</div>
-                                                    <div className="text-xs opacity-60">Perfect for dark mode</div>
-                                                </div>
-                                            </button>
-                                            <button
-                                                onClick={() => downloadResume('light')}
-                                                className={`w-full text-left px-4 py-3 rounded-lg hover:${isDark ? 'bg-gray-700' : 'bg-gray-100'} transition-all duration-300 flex items-center gap-3 cursor-pointer hover:scale-105`}
-                                            >
-                                                <Sun size={18} className="text-yellow-400 animate-pulse" />
-                                                <div>
-                                                    <div className="font-medium">Light Theme</div>
-                                                    <div className="text-xs opacity-60">Print-friendly version</div>
-                                                </div>
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-
-                                <a href="#contact"
-                                    className={`border-2 ${borderColor} hover:border-cyan-400 px-8 py-3 rounded-lg flex items-center gap-2 transition-all duration-300 font-medium hover:scale-105 hover:shadow-lg hover:shadow-cyan-400/20 button-glow-hover relative overflow-hidden`}
-                                >
-                                    <Mail size={20} className="relative z-10" />
-                                    <span className="relative z-10">Get in Touch</span>
-                                </a>
-                            </div>
-
-                            {/* Social Links */}
-                            <div className="flex gap-4 mt-8">
-                                <a href={GITHUB} target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-cyan-400/20' : 'bg-gray-200 hover:bg-cyan-400/20'} transition-all duration-300 social-icon border border-transparent hover:border-cyan-400`}>
-                                    <Github size={22} />
-                                </a>
-                                <a href={LINKEDIN} target="_blank" className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-cyan-400/20' : 'bg-gray-200 hover:bg-cyan-400/20'} transition-all duration-300 social-icon border border-transparent hover:border-cyan-400`}>
-                                    <Linkedin size={22} />
-                                </a>
-                                <a href={`mailto:${EMAIL}`} className={`p-3 rounded-lg ${isDark ? 'bg-gray-700 hover:bg-cyan-400/20' : 'bg-gray-200 hover:bg-cyan-400/20'} transition-all duration-300 social-icon border border-transparent hover:border-cyan-400`}>
-                                    <Mail size={22} />
-                                </a>
-                            </div>
-                        </div>
-
-                        {/* Status Card */}
-                        <div className={`${isDark ? 'bg-gray-700/50' : 'bg-gray-100/50'} rounded-xl p-6 border ${borderColor} h-fit hover:shadow-xl transition-all duration-500 relative overflow-hidden`}>
-                            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 to-blue-500/5 opacity-0 hover:opacity-100 transition-opacity"></div>
-
-                            <h3 className="font-mono font-bold mb-4 flex items-center gap-2 relative z-10">
-                                <Cpu className={`${accentColor} animate-pulse`} size={20} />
-                                Current Status
-                            </h3>
-                            <div className="space-y-3 font-mono text-sm relative z-10">
-                                <div className="flex justify-between items-center stat-card">
-                                    <span className="opacity-70">Location:</span>
-                                    <span className={`${accentColor} stat-value status-badge`}>Remote</span>
-                                </div>
-                                <div className="flex justify-between items-center stat-card">
-                                    <span className="opacity-70">Projects:</span>
-                                    <span className={`${accentColor} stat-value status-badge`} style={{ animationDelay: '0.1s' }}>{PROJECTS.length}</span>
-                                </div>
-                                <div className="flex justify-between items-center stat-card">
-                                    <span className="opacity-70">Availability:</span>
-                                    <span className="text-green-400 flex items-center gap-2 stat-value status-badge" style={{ animationDelay: '0.2s' }}>
-                                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                                        Open
-                                    </span>
-                                </div>
-                                <div className="flex justify-between items-center stat-card">
-                                    <span className="opacity-70">Response:</span>
-                                    <span className="stat-value status-badge" style={{ animationDelay: '0.3s' }}>24-48 hours</span>
-                                </div>
-                            </div>
-
-                            <div className="mt-6 pt-4 border-t border-gray-600 relative z-10">
-                                <div className="text-xs opacity-60 mb-2 font-mono">SKILLS PROFICIENCY</div>
-                                <div className="space-y-2">
-                                    <div>
-                                        <div className="flex justify-between text-xs mb-1">
-                                            <span>Full Stack Development</span>
-                                            <span className={accentColor}>90%</span>
-                                        </div>
-                                        <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2 overflow-hidden`}>
-                                            <div className={`${accentBg} h-2 rounded-full progress-bar-fill`} style={{ width: '90%' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between text-xs mb-1">
-                                            <span>DevOps</span>
-                                            <span className={accentColor}>80%</span>
-                                        </div>
-                                        <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2 overflow-hidden`}>
-                                            <div className={`${accentBg} h-2 rounded-full progress-bar-fill`} style={{ width: '80%', animationDelay: '0.2s' }}></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div className="flex justify-between text-xs mb-1">
-                                            <span>Linux</span>
-                                            <span className={accentColor}>82%</span>
-                                        </div>
-                                        <div className={`${isDark ? 'bg-gray-600' : 'bg-gray-300'} rounded-full h-2 overflow-hidden`}>
-                                            <div className={`${accentBg} h-2 rounded-full progress-bar-fill`} style={{ width: '82%', animationDelay: '0.4s' }}></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  {showResumeMenu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`absolute top-full left-0 mt-3 ${cardBg} border ${borderColor} rounded-lg p-2 min-w-[200px] z-20 shadow-2xl backdrop-blur-xl`}
+                    >
+                      <button
+                        onClick={() => downloadResume("dark")}
+                        className={`w-full text-left px-4 py-3 rounded-md hover:bg-cyan-500/20 transition-colors flex items-center gap-2`}
+                      >
+                        <Moon size={14} className="opacity-70" />
+                        Dark Theme
+                      </button>
+                      <button
+                        onClick={() => downloadResume("light")}
+                        className={`w-full text-left px-4 py-3 rounded-md hover:bg-cyan-500/20 transition-colors flex items-center gap-2 mt-1`}
+                      >
+                        <Sun size={14} className="opacity-70" />
+                        Light Theme
+                      </button>
+                    </motion.div>
+                  )}
                 </div>
-            </section>
-        </>
-    )
-}
 
-export default HeroSection
+                <a
+                  href="#contact"
+                  className={`border ${borderColor} bg-transparent px-6 py-3 rounded-lg flex items-center gap-2 cursor-pointer transition-all duration-300 hover:scale-105 hover:bg-cyan-500/10 shadow-lg`}
+                >
+                  <Mail size={18} />
+                  <span>Contact_Route</span>
+                </a>
+              </motion.div>
+
+              {/* Social Links */}
+              <motion.div variants={itemVariants} className="flex gap-4 mt-10 w-fit font-mono text-sm">
+                <a
+                  href={GITHUB}
+                  target="_blank"
+                  className="p-3 rounded-lg border border-gray-700 hover:border-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
+                >
+                  <Github size={20} className="group-hover:text-cyan-400" />
+                </a>
+                <a
+                  href={LINKEDIN}
+                  target="_blank"
+                  className="p-3 rounded-lg border border-gray-700 hover:border-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
+                >
+                  <Linkedin size={20} className="group-hover:text-cyan-400" />
+                </a>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="p-3 rounded-lg border border-gray-700 hover:border-cyan-400 hover:bg-cyan-500/10 hover:text-cyan-400 transition-all duration-300 hover:scale-110 flex items-center gap-2 group"
+                >
+                  <Mail size={20} className="group-hover:text-cyan-400" />
+                </a>
+              </motion.div>
+            </motion.div>
+
+            {/* Status Card (Right) */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className={`border border-cyan-500/30 rounded-xl p-6 h-fit bg-slate-900/50 backdrop-blur-sm relative overflow-hidden`}
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-3xl rounded-full"></div>
+              <h3 className="font-mono font-bold mb-5 flex items-center gap-2 opacity-90 border-b border-gray-700 pb-3">
+                <Cpu size={18} className="text-cyan-400" />
+                <span>sys_status</span>
+              </h3>
+              <div className="space-y-4 text-sm font-mono">
+                <div className="flex justify-between items-center bg-black/20 p-2 rounded-md">
+                  <span className="opacity-60 text-xs">LOCATION</span>
+                  <span className="text-cyan-400 font-semibold text-xs">Remote</span>
+                </div>
+                <div className="flex justify-between items-center bg-black/20 p-2 rounded-md">
+                  <span className="opacity-60 text-xs">PROJECTS</span>
+                  <span className="text-cyan-400 font-semibold text-xs">{PROJECTS.length} Executed</span>
+                </div>
+                <div className="flex justify-between items-center bg-black/20 p-2 rounded-md">
+                  <span className="opacity-60 text-xs">STATUS</span>
+                  <span className="text-green-400 font-semibold text-xs flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    Available
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-5 border-t border-gray-700 font-mono">
+                <div className="flex justify-between text-xs mb-2 opacity-60">
+                  <span>Stack_Allocation</span>
+                  <span>Sys.Load</span>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-[10px] mb-1 opacity-80">
+                      <span>Full Stack</span>
+                      <span>90%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-cyan-400 w-[90%] rounded-full"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between text-[10px] mb-1 opacity-80">
+                      <span>DevOps/Linux</span>
+                      <span>85%</span>
+                    </div>
+                    <div className="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+                      <div className="h-full bg-green-400 w-[85%] rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
+    </>
+  );
+};
+
+export default HeroSection;
