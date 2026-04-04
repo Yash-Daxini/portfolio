@@ -1,48 +1,89 @@
-import { SKILLS } from '@/shared/config'
-import { Box } from 'lucide-react'
-import React from 'react'
+import { SKILLS } from "@/shared/config";
+import { Box, Code2 } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
 
 interface SkillsSectionProps {
-    cardBg: string
-    accentColor: string
-    borderColor: string
-    isDark: boolean
+  cardBg: string;
+  accentColor: string;
+  borderColor: string;
+  isDark: boolean;
 }
 
-const SkillsSection: React.FC<SkillsSectionProps> = ({ cardBg, accentColor, borderColor, isDark }: SkillsSectionProps) => {
-    return (
-        <section id="skills" className="mb-20">
-            <div className="flex items-center gap-3 mb-6">
-                <Box className={accentColor} size={28} />
-                <h2 className="text-3xl font-bold">Technical Skills</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Object.entries(SKILLS).map(([category, data], index) => (
-                    <div
-                        key={category}
-                        className={`${cardBg} border ${borderColor} rounded-xl p-6 hover:shadow-xl transition-all duration-500 hover:scale-105 hover:border-cyan-400 animate-fade-in`}
-                        style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                        <h3 className={`font-mono font-bold mb-4 ${accentColor} uppercase flex items-center gap-2`}>
-                            {data.icon}
-                            {category}
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                            {data.items.map((skill, i) => (
-                                <span
-                                    key={skill}
-                                    className={`${isDark ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'} px-3 py-1.5 rounded-lg text-sm transition-all duration-300 hover:scale-110 cursor-default`}
-                                    style={{ animationDelay: `${(index * 100) + (i * 50)}ms` }}
-                                >
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
+const SkillsSection: React.FC<SkillsSectionProps> = ({
+  cardBg,
+  accentColor,
+  borderColor,
+}: SkillsSectionProps) => {
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+  };
+
+  const itemVariants: any = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
+  };
+
+  return (
+    <>
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        id="skills"
+        className="mb-20"
+      >
+        <div className="flex items-center gap-3 mb-8 pb-3 border-b-2 border-gray-500/20">
+          <div className="bg-cyan-500/20 p-2 rounded-lg">
+            <Code2 className="text-cyan-400" size={24} />
+          </div>
+          <h2 className="text-3xl font-extrabold tracking-tight">
+            Technical Stack
+          </h2>
+        </div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+        >
+          {Object.entries(SKILLS).map(([category, data]) => (
+            <motion.div
+              variants={itemVariants}
+              key={category}
+              className={`${cardBg} border ${borderColor} rounded-2xl p-6 shadow-xl hover:shadow-cyan-500/10 transition-shadow duration-300 relative overflow-hidden group`}
+            >
+              {/* Subtle tech background glow */}
+              <div className="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
+
+              <h3
+                className={`font-mono font-bold mb-5 ${accentColor} flex items-center gap-2 pb-3 border-b border-gray-700`}
+              >
+                <span className="opacity-80">{data.icon}</span>
+                <span className="tracking-wider text-sm">{`<${category} />`}</span>
+              </h3>
+
+              <div className="flex flex-wrap gap-2">
+                {data.items.map((skill) => (
+                  <span
+                    key={skill}
+                    className={`px-3 py-1.5 text-sm rounded-lg bg-black/20 border border-transparent group-hover:border-cyan-500/20 hover:!border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 cursor-default shadow-sm font-medium`}
+                  >
+                    {skill}
+                  </span>
                 ))}
-            </div>
-        </section>
-    )
-}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+    </>
+  );
+};
 
-export default SkillsSection
+export default SkillsSection;

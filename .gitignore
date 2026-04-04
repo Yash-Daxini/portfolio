@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.agent/
+.gsd/
+.gemini/
+adapters/
+docs/
+scripts/
+GSD-STYLE.md
+model_capabilities.yaml
+PROJECT_RULES.md
