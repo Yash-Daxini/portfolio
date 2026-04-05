@@ -67,7 +67,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 </motion.div>
                 <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight">
                   Hello, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-green-400 font-mono">Yash Daxini</span>
-                  <span className={`inline-block w-3 h-10 ml-2 animate-pulse ${accentBg} align-middle`}></span>
                 </motion.h1>
                 <motion.h2 variants={itemVariants} className="text-xl md:text-2xl mb-6 opacity-80 font-medium">
                   Software Engineer & Full-Stack Developer
