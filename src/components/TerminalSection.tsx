@@ -425,11 +425,11 @@ const TerminalSection: React.FC<TerminalSectionProps> = ({
         transition={{ duration: 0.8 }}
         className="mb-20"
       >
-        <div className="flex items-center gap-3 mb-6">
-          <div className="animate-float">
-            <Terminal className={`${accentColor} animate-glow`} size={28} />
+        <div className="flex items-center gap-3 mb-8 pb-3 border-b-2 border-gray-500/20">
+          <div className="bg-blue-500/20 p-2 rounded-lg">
+            <Terminal className="text-blue-400" size={24} />
           </div>
-          <h2 className="text-3xl font-bold text-gradient">
+          <h2 className="text-3xl font-extrabold tracking-tight">
             Interactive Terminal
           </h2>
         </div>

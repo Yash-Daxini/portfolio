@@ -5,7 +5,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import MainContent from "./MainContent";
 import BootSequence from "./BootSequence";
-import MatrixRain from "./MatrixRain";
+import DotGrid from "./DotGrid";
+import ScrollProgress from "./ScrollProgress";
 
 const Portfolio = () => {
   const [isDark, setIsDark] = useState(true);
@@ -40,11 +41,9 @@ const Portfolio = () => {
       <div
         className={`relative min-h-screen ${bgColor} ${textColor} transition-all duration-500 overflow-hidden ${showBootSequence ? "hidden" : ""}`}
       >
-        {isDark && (
-          <div className="fixed inset-0 pointer-events-none z-0 opacity-40">
-            <MatrixRain opacity={1} />
-          </div>
-        )}
+        <ScrollProgress />
+
+        {isDark && <DotGrid />}
 
         <Header
           cardBg={cardBg}

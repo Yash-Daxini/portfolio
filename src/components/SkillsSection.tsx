@@ -1,7 +1,8 @@
 import { SKILLS } from "@/shared/config";
-import { Box, Code2 } from "lucide-react";
+import { Code2 } from "lucide-react";
 import React from "react";
 import { motion } from "framer-motion";
+import { useTilt } from "@/hooks/useTilt";
 
 interface SkillsSectionProps {
   cardBg: string;
@@ -9,6 +10,23 @@ interface SkillsSectionProps {
   borderColor: string;
   isDark: boolean;
 }
+
+const TiltCard: React.FC<{ children: React.ReactNode; className: string }> = ({
+  children,
+  className,
+}) => {
+  const { ref, handleMouseMove, handleMouseLeave } = useTilt(6);
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+    >
+      {children}
+    </div>
+  );
+};
 
 const SkillsSection: React.FC<SkillsSectionProps> = ({
   cardBg,
@@ -56,28 +74,31 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({
             <motion.div
               variants={itemVariants}
               key={category}
-              className={`${cardBg} border ${borderColor} rounded-2xl p-6 shadow-xl hover:shadow-cyan-500/10 transition-shadow duration-300 relative overflow-hidden group`}
             >
-              {/* Subtle tech background glow */}
-              <div className="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
-
-              <h3
-                className={`font-mono font-bold mb-5 ${accentColor} flex items-center gap-2 pb-3 border-b border-gray-700`}
+              <TiltCard
+                className={`${cardBg} border ${borderColor} rounded-2xl p-6 shadow-xl hover:shadow-cyan-500/10 transition-shadow duration-300 relative overflow-hidden group h-full`}
               >
-                <span className="opacity-80">{data.icon}</span>
-                <span className="tracking-wider text-sm">{`<${category} />`}</span>
-              </h3>
+                {/* Subtle tech background glow */}
+                <div className="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
 
-              <div className="flex flex-wrap gap-2">
-                {data.items.map((skill) => (
-                  <span
-                    key={skill}
-                    className={`px-3 py-1.5 text-sm rounded-lg bg-black/20 border border-transparent group-hover:border-cyan-500/20 hover:!border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 cursor-default shadow-sm font-medium`}
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
+                <h3
+                  className={`font-mono font-bold mb-5 ${accentColor} flex items-center gap-2 pb-3 border-b border-gray-700`}
+                >
+                  <span className="opacity-80">{data.icon}</span>
+                  <span className="tracking-wider text-sm">{`<${category} />`}</span>
+                </h3>
+
+                <div className="flex flex-wrap gap-2">
+                  {data.items.map((skill) => (
+                    <span
+                      key={skill}
+                      className={`px-3 py-1.5 text-sm rounded-lg bg-black/20 border border-transparent group-hover:border-cyan-500/20 hover:!border-cyan-400 hover:bg-cyan-500/10 transition-all duration-300 cursor-default shadow-sm font-medium`}
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </TiltCard>
             </motion.div>
           ))}
         </motion.div>
